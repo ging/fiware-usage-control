@@ -26,7 +26,7 @@ services:
    hostname: fluent
    container_name: fluent
    volumes:
-     - /opt/data:/fluentd/log ging/fluent
+     - /opt/data:/fluentd/log
      - /opt/data:/fluentd/etc
    environment:
      - FLUENTD_CONF=yours.conf
