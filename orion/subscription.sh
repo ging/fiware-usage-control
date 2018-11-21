@@ -29,7 +29,9 @@ curl -v localhost:1026/v2/subscriptions -s -S --header 'Content-Type: applicatio
       "url": "http://138.4.7.110:9001"
     },
     "attrs": [
-      "presence"
+      "presence",
+      "zip",
+      "temperature"
     ]
   },
   "expires": "2040-01-01T14:00:00.00Z",
