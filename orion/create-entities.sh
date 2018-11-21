@@ -26,7 +26,8 @@ curl -X POST localhost:1026/v2/entities -s -S --header 'Content-Type: applicatio
                   "value": "6785924682"
                   }
          }
-    }
+    },
+    "temperature": {"type": "Float","value": 50,"metadata": {}}
 }'
 
 curl -X POST localhost:1026/v2/entities -s -S --header 'Content-Type: application/json' -d '{
@@ -56,7 +57,8 @@ curl -X POST localhost:1026/v2/entities -s -S --header 'Content-Type: applicatio
                   "value": "6782923681"
                   }
          }
-    }
+    },
+    "temperature": {"type": "Float","value": 60,"metadata": {}}
 }' 
 
 curl -X POST localhost:1026/v2/entities -s -S --header 'Content-Type: application/json' -d '{
@@ -86,45 +88,7 @@ curl -X POST localhost:1026/v2/entities -s -S --header 'Content-Type: applicatio
                   "value": "6883924632"
                   }
          }
-    }
-}'
-
-curl -v localhost:1026/v2/subscriptions -s -S --header 'Content-Type: application/json' \
-    -d '{
-  "description": "A subscription to get info about Home-01-02-03",
-  "subject": {
-    "entities": [
-      {
-        "id": "home-01",
-        "type": "home"
-      },
-      {
-        "id": "home-02",
-        "type": "home"
-      },
-      {
-        "id": "home-03",
-        "type": "home"
-      }
-    ],
-    "condition": {
-      "attrs": [
-        "presence"
-      ]
-    }
-  },
-  "notification": {
-    "http": {
-      "url": "http://flink-worker:9001"
     },
-    "attrs": [
-      "presence"
-    ]
-  },
-  "expires": "2040-01-01T14:00:00.00Z",
-  "throttling": 5
+    "temperature": {"type": "Float","value": 70,"metadata": {}}
 }'
-
-
-
 
