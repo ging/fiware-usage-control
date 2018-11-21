@@ -27,11 +27,13 @@
             <version>1.5.4</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-cep-scala_${scala.binary.version}</artifactId>
             <version>1.5.4</version>
         </dependency>
+
 
         <!-- Scala Library, provided by Flink as well. -->
         <dependency>
@@ -66,7 +68,11 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.fiware.cosmos</groupId>
+            <artifactId>orion.flink.connector</artifactId>
+            <version>1.0 </version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
