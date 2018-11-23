@@ -1,0 +1,20 @@
+body {
+	text-align: center;
+	font-family: 'Roboto', sans-serif;
+    	color: #192C6A;
+}
+
+
+#messages {
+	font-size: 40px;
+}
+h1 {
+	font-size: 50px;
+}
+
+#logo {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 250px;
+}
