@@ -10,14 +10,17 @@ import org.json4s.DefaultFormats
 import org.slf4j.LoggerFactory
 import org.apache.flink.cep.scala.{CEP}
 import org.apache.flink.cep.scala.pattern.Pattern
+
 /**
-  * CEP Monitoring
+  * FIWARE Data Usage Control
+  * Flink Complex Event Processing
   *
   */
 object CEPMonitoring{
   private lazy val logger = LoggerFactory.getLogger(getClass)
   implicit val formats = DefaultFormats
   val executionGraphProperties: Seq[String] =  Seq.empty
+
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
 
@@ -35,6 +38,9 @@ object CEPMonitoring{
       )
     })
     orionProcessedDataStream.print()
+
+
+
 
     // First pattern: At least 3 events in 1 minute
     val countPattern = Pattern.begin[Entity]("start",AfterMatchSkipStrategy.skipPastLastEvent()).timesOrMore(3).within(Time.seconds(10))
@@ -54,7 +60,7 @@ object CEPMonitoring{
     val outputTag = OutputTag[String]("side-output")
 
     // Gather all matched events
-    val orionDataStreamSink : DataStream[OrionSinkObject] = patternStream.select(outputTag){
+/*    val orionDataStreamSink : DataStream[OrionSinkObject] = patternStream.select(outputTag){
         (pattern: scala.collection.Map[String, Iterable[Entity]], timestamp: Long) => {println("here")
           ""}
       }{
@@ -64,10 +70,20 @@ object CEPMonitoring{
        .map(entities => {
         println(entities)
         new OrionSinkObject(new BuiltEntity(entities).toString, "http://localhost:9029/", ContentType.JSON, HTTPMethod.POST)
+      })*/
+
+    val orionDataStreamSink = patternStream.select(
+      (pattern : scala.collection.Map[String, Iterable[Entity]])=> {
+        println(pattern)
+        (pattern.get("start").toList(0) ++ pattern.get("middle").toList(0)).toList})
+      .map(entities => {
+        println(entities)
+        new OrionSinkObject(new BuiltEntity(entities).toString, "http://localhost:9029/", ContentType.JSON, HTTPMethod.POST)
       })
 
-    val timeoutResult: DataStream[String] = orionDataStreamSink.getSideOutput(outputTag)
-    timeoutResult.map(i=> i + "timedout").print()
+
+/*    val timeoutResult: DataStream[String] = orionDataStreamSink.getSideOutput(outputTag)
+    timeoutResult.map(i=> i + "timedout").print()*/
 
 
     // Send matched data to Flink Job

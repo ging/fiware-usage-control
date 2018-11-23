@@ -1,0 +1,14 @@
+while true
+do
+ 
+    curl -v -s -S X POST http://localhost:3002/avg \
+    --header 'Content-Type: application/json; charset=utf-8' \
+    --header 'Accept: application/json' \
+    --header 'User-Agent: orion/0.10.0' \
+    --header "Fiware-Service: demo" \
+    --header "Fiware-ServicePath: /test" \
+    -d  '{ "data":{"entities": "home-avg": {"avg":{"value": 0.5 }}}}'
+
+
+    sleep 1
+done

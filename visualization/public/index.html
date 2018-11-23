@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>FIWARE</title>
+	<script src="socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="smoothie.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="basic.css"></link>
+
+</head>
+<body>
+	<img id="logo" src="fi-ware_logo.png">
+	<br/><br/><br/><br/>
+	<h1>Average presence in city homes</h1>
+	<canvas id="smoothie-chart" width="1000" height="383"></canvas>
+	<br/><br/>
+	<div id="messages"></div>
+	<script type="text/javascript">
+		var socket = io.connect('http://localhost:3002', { 'forceNew': true });
+		function render(data) {
+			var html =  `<div>
+			<strong>${data}</strong>
+		</div>` 
+		document.getElementById('messages').innerHTML = html;
+	}
+
+	var chart = new SmoothieChart({maxValue:1,
+		minValue: 0, 
+		interpolation: 'step', 
+		labels:{
+			fillStyle:'#6e6e6e'
+		}, 
+		millisPerPixel:100,
+		grid:{
+			millisPerLine:10000,
+			fillStyle: '#ffffff',
+			strokeStyle: '#d2d2d2'
+		}
+	}),
+	canvas = document.getElementById('smoothie-chart'),
+	series = new TimeSeries();
+	series.append(new Date().getTime(), 0);	
+	chart.addTimeSeries(series, {
+		lineWidth:3.3,
+		strokeStyle:'#81C1D1', 
+		fillStyle:'#81C1D1'
+	});
+	chart.streamTo(canvas, 500);
+	socket.on('messages', function(data) {
+		console.log(data)
+		var number = parseFloat(data.avg)
+		render((Math.floor(number *10000)/100).toFixed(2)+"%");
+		series.append(new Date().getTime(), data.avg);	
+	});
+
+</script>
+
+</body>
+
+</html>
