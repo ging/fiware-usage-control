@@ -10,6 +10,7 @@ import org.fiware.cosmos.orion.flink.connector._
   * FIWARE Data Usage Control
   *
   */
+//org.fiware.cosmos.orion.flink.cep.examples.example1.AveragePurchase
 object AveragePurchase {
 //  final val URL_CB = "http://138.4.22.138:1026/v2/entities/home-avg/attrs"
   final val CONTENT_TYPE = ContentType.JSON
@@ -18,7 +19,10 @@ object AveragePurchase {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     // Create Orion Source. Receive notifications on port 9001
     val eventStream = env.addSource(new OrionSource(9001))
-    eventStream.print()
+
+    // Sink directo => Matar
+    // eventStream.print()
+
     // Process event stream
     val processedDataStream = eventStream
       .flatMap(event => event.entities)

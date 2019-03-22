@@ -23,7 +23,7 @@ under the License.
 
 	<groupId>org.fiware.cosmos</groupId>
 	<artifactId>orion.flink.cep.examples</artifactId>
-	<version>1.0</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>Fiware Orion Flink Data Usage Examples</name>
@@ -78,7 +78,7 @@ under the License.
 		<dependency>
 			<groupId>org.fiware.cosmos</groupId>
 			<artifactId>orion.flink.connector</artifactId>
-			<version>1.0</version>
+			<version>1.0.3-genova</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.json4s/json4s-jackson -->

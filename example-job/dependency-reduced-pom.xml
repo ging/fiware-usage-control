@@ -4,7 +4,7 @@
   <groupId>org.fiware.cosmos</groupId>
   <artifactId>orion.flink.cep.examples</artifactId>
   <name>Fiware Orion Flink Data Usage Examples</name>
-  <version>1.0</version>
+  <version>1.0.0</version>
   <url>https://www.fiware.org/</url>
   <build>
     <plugins>
