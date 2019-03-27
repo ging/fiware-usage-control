@@ -36,8 +36,8 @@ object AveragePurchase {
         })
       })
       .map(products => products.map(_.price).sum)
-      .timeWindowAll(Time.seconds(15))
-      .aggregate(new AverageAggregate)
+     // .timeWindowAll(Time.seconds(15))
+     // .aggregate(new AverageAggregate)
 
     // Post average to new entity in Orion Context Broker
     // OrionSink.addSink(processedDataStream)
