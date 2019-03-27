@@ -1,6 +1,8 @@
 package org.fiware.cosmos.orion.flink.cep
 
 
+import javafx.scene.control.Alert
+
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.cep.nfa.AfterMatchSkipStrategy
 import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
@@ -8,7 +10,7 @@ import org.apache.flink.streaming.api.windowing.time.Time
 import org.fiware.cosmos.orion.flink.cep.connector._
 import org.json4s.DefaultFormats
 import org.slf4j.LoggerFactory
-import org.apache.flink.cep.scala.{CEP}
+import org.apache.flink.cep.scala.CEP
 import org.apache.flink.cep.scala.pattern.Pattern
 
 /**
@@ -25,22 +27,28 @@ object CEPMonitoring{
     // Create Orion Source. Receive notifications on port 9001
     val stream : DataStream[Either[NgsiEvent,ExecutionGraph]] = env.addSource(new CEPSource(9200))
 
-
     val operationStream : DataStream[ExecutionGraph] = stream
       .filter(_.isRight)
-      .map(op => op.right.get)
+      .map(_.right.get)
+      .flatMap(_.msg.split(" -> "))
+      .map(ExecutionGraph(_))
 
     val entityStream : DataStream[Entity] = stream
       .filter(_.isLeft)
-      .map(ev => ev.left.get )
-      .flatMap(ev => ev.entities)
+      .map(_.left.get )
+      .flatMap(_.entities)
 
-    entityStream.print()
+    operationStream.print()
 
-  /*  // First pattern: At least 3 events in 1 minute
+    // First pattern: At least N events in T
     val countPattern = Pattern.begin[Entity]("start", AfterMatchSkipStrategy.skipPastLastEvent())
-      .timesOrMore(3).within(Time.seconds(10))
+        .timesOrMore(Policies.numMaxEvents).within(Time.seconds(Policies.facturationTime))
+     CEP.pattern(entityStream, countPattern).select(Signals.createAlert("COUNT_POLICY", _))
 
+    // Second pattern:
+    val
+
+/*
     // Second pattern: At least 2 different zip codes
     val zipCodePattern =countPattern.followedBy("middle")
       .where((ent: Entity,ctx)=>  {
@@ -82,22 +90,7 @@ object CEPMonitoring{
 /*    val timeoutResult: DataStream[String] = orionDataStreamSink.getSideOutput(outputTag)
     timeoutResult.map(i=> i + "timedout").print()*/
 
-
-    // Send matched data to Flink Job
-//    OrionSink.addSink(orionDataStreamSink)
-
-
     env.execute("CEP Monitoring")
   }
 
-  case class BuiltEntity(entities: List[Entity]) extends Serializable {
-    override def toString :String = {
-      val entityList = entities.map(entity=>{
-        val attrs = entity.attrs.map(attr=> "\""+attr._1+"\":{\"value\": \""+attr._2.value+"\", \"type\": \""+attr._2.`type`+"\", \"metadata\":"+"{}"+"}").mkString(", ")
-        "{\"id\":\""+entity.id+"\",\"type\":\""+entity.`type`+"\","+attrs+"}"
-      }).mkString(", ")
-      "{ \"data\": ["+entityList+"],  \"subscriptionId\": \"\" }"
-    }
-  }
-  case class FluentLog(host: String, ident: String, message: String)
 }

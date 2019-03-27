@@ -22,11 +22,10 @@ import io.netty.channel.{ChannelFutureListener, ChannelHandlerContext, ChannelIn
 import io.netty.handler.codec.http.HttpResponseStatus.{CONTINUE, OK}
 import io.netty.handler.codec.http.HttpVersion.HTTP_1_1
 import io.netty.handler.codec.http._
-import io.netty.util.{AsciiString, CharsetUtil}
+import io.netty.util.{AsciiString}
 import org.apache.flink.streaming.api.functions.source.SourceFunction.SourceContext
-import org.fiware.cosmos.orion.flink.cep.orion.fiware.cosmos.orion.flink.cep.connector.JobId
+import org.fiware.cosmos.orion.flink.cep.orion.fiware.cosmos.orion.flink.cep.connector.{CEPParser}
 import org.json4s.DefaultFormats
-import org.json4s.jackson.JsonMethods.parse
 import org.slf4j.LoggerFactory
 
 import scala.util.matching.Regex
@@ -60,9 +59,9 @@ class HttpHandler(
         }
 
         if (sc != null) {
-          parseGenericMessage(req)
+          CEPParser.parseGenericMessage(req)
             .filter(_ != null)
-            .map(parseMessage)
+            .map(CEPParser.parseMessage)
             .filter(_ != null)
             .foreach(sc.collect)
         }
@@ -86,44 +85,6 @@ class HttpHandler(
     }
   }
 
-  def parseGenericMessage(req : FullHttpRequest) : Seq[Log] = {
-    val headerEntries = req.headers().entries()
-    // Retrieve body content and convert from Byte array to String
-    val content = req.content()
-    val byteBufUtil = ByteBufUtil.readBytes(content.alloc, content, content.readableBytes)
-    val jsonBodyString = byteBufUtil.toString(0,content.capacity(),CharsetUtil.US_ASCII)
-    content.release()
-    parse(jsonBodyString).extract[Seq[Log]]
-  }
-
-
-  def parseMessage(log : Log) : Either[NgsiEvent, ExecutionGraph] =  {
-    try {
-      val msg = log.message
-      println("**********************************************")
-      println(msg)
-      println("**********************************************")
-
-      val ngsiPattern : Regex = ".*? org.fiware.cosmos.orion.flink.connector.OrionHttpHandler *-* *(.*)".r
-      val executionGraphPattern : Regex = ".*? org.apache.flink.runtime.executiongraph.ExecutionGraph *-* *(.*)".r
-      val jobIdPattern : Regex = ".*? org.apache.flink.runtime.jobmaster.JobManagerRunner *-* *JobManager runner for job Socket Window NgsiEvent \\((\\w*)\\) .*".r
-
-      msg match {
-        case ngsiPattern(ng) => Left(parse(ng).extract[NgsiEvent])
-        case executionGraphPattern(eg) => Right(parse(eg).extract[ExecutionGraph])
-        case jobIdPattern(id) => {
-          println("Este es el job Id antes " + JobId.jobId)
-          JobId.jobId = id
-          println("Este es el job Id después " + JobId.jobId)
-          null
-        }
-        case _ => null
-      }
-    } catch {
-      case _: Exception => null
-      case _: Error => null
-    }
-  }
   private def buildResponse(content: Array[Byte] = Array.empty[Byte]): FullHttpResponse = {
     val response: FullHttpResponse = new DefaultFullHttpResponse(
       HTTP_1_1, OK, Unpooled.wrappedBuffer(content)
