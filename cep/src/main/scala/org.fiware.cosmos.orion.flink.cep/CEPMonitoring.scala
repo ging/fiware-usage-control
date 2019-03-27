@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory
 import org.apache.flink.cep.scala.CEP
 import org.apache.flink.cep.scala.pattern.Pattern
 
+import scala.util.matching.Regex
+
 /**
   * FIWARE Data Usage Control
   * Flink Complex Event Processing
@@ -27,12 +29,14 @@ object CEPMonitoring{
     // Create Orion Source. Receive notifications on port 9001
     val stream : DataStream[Either[NgsiEvent,ExecutionGraph]] = env.addSource(new CEPSource(9200))
 
+    // Operation Stream
     val operationStream : DataStream[ExecutionGraph] = stream
       .filter(_.isRight)
       .map(_.right.get)
       .flatMap(_.msg.split(" -> "))
       .map(ExecutionGraph(_))
 
+    // Entity Stream
     val entityStream : DataStream[Entity] = stream
       .filter(_.isLeft)
       .map(_.left.get )
@@ -41,56 +45,33 @@ object CEPMonitoring{
     operationStream.print()
 
     // First pattern: At least N events in T
-    val countPattern = Pattern.begin[Entity]("start", AfterMatchSkipStrategy.skipPastLastEvent())
-        .timesOrMore(Policies.numMaxEvents).within(Time.seconds(Policies.facturationTime))
+    val countPattern = Pattern.begin[Entity]("events" )
+        .timesOrMore(Policies.numMaxEvents+1).within(Time.seconds(Policies.facturationTime))
+
      CEP.pattern(entityStream, countPattern).select(Signals.createAlert("COUNT_POLICY", _))
 
-    // Second pattern:
-    val
+    // Second pattern: Source -> Sink. Aggregation TimeWindow
+    val aggregatePattern = Pattern.begin[ExecutionGraph]("start", AfterMatchSkipStrategy.skipPastLastEvent())
+      .where(executionGraphChecker(_, "source"))
+      .notFollowedBy("middle").where(executionGraphChecker(_, "aggregation"))
+      .followedBy("end").where(executionGraphChecker(_, "sink")).timesOrMore(1)
 
-/*
-    // Second pattern: At least 2 different zip codes
-    val zipCodePattern =countPattern.followedBy("middle")
-      .where((ent: Entity,ctx)=>  {
-        ctx.getEventsForPattern("start").map(e => e.attrs("zip").value).toSet.size >= 2 })
+    CEP.pattern(operationStream, aggregatePattern).select(Signals.createAlert("AGGREGATION_POLICY", _))
 
-    // Concatenate patterns
-    val pattern = zipCodePattern
-
-    // Apply pattern to dataStream
-    val patternStream  = CEP.pattern(entityStream, pattern)
-
-    val outputTag = OutputTag[String]("side-output")
-*/
-    // Gather all matched events
-/*    val orionDataStreamSink : DataStream[OrionSinkObject] = patternStream.select(outputTag){
-        (pattern: scala.collection.Map[String, Iterable[Entity]], timestamp: Long) => {println("here")
-          ""}
-      }{
-        (pattern : scala.collection.Map[String, Iterable[Entity]])=> {
-          println(pattern)
-          (pattern.get("start").toList(0) ++ pattern.get("middle").toList(0)).toList}}
-       .map(entities => {
-        println(entities)
-        new OrionSinkObject(new BuiltEntity(entities).toString, "http://localhost:9029/", ContentType.JSON, HTTPMethod.POST)
-      })
-
-      */
-
-  /*  val orionDataStreamSink = patternStream.select(
-      (pattern : scala.collection.Map[String, Iterable[Entity]])=> {
-        println(pattern)
-        (pattern.get("start").toList(0) ++ pattern.get("middle").toList(0)).toList})
-      .map(entities => {
-        println(entities)
-        new OrionSinkObject(new BuiltEntity(entities).toString, "http://localhost:9029/", ContentType.JSON, HTTPMethod.POST)
-      })
-*/
-
-/*    val timeoutResult: DataStream[String] = orionDataStreamSink.getSideOutput(outputTag)
-    timeoutResult.map(i=> i + "timedout").print()*/
 
     env.execute("CEP Monitoring")
+  }
+
+  def executionGraphChecker(event: ExecutionGraph, flag: String) : Boolean = {
+    val sourcePattern : Regex = "Source(.*)".r
+    val sinkPattern : Regex = "Sink(.*)".r
+    val aggPattern : Regex = ".+TumblingProcessingTimeWindows\\((\\d+)\\),.*".r
+    event.msg match {
+      case sourcePattern(_) => flag == "source"
+      case aggPattern(window) =>  flag == "aggregation" &&  window.toFloat >= Policies.aggregateTime
+      case sinkPattern(_) => flag == "sink"
+      case _ => false
+    }
   }
 
 }
