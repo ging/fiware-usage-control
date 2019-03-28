@@ -6,10 +6,15 @@ import scalaj.http.Http
 
 object CBRequests {
 
-  def unsubscribe(contextBrokerURL: String, notificationURL:String ) {
+  /**
+    * Method for delelting a Subscription in Orion context Broker
+    * @param contextHost Context Broker host in the form of IP:Port Ex(127.0.0.1:1026)
+    * @param notificationURL URL of the notification fiel of the subscription
+    */
+  def unsubscribe(contextBrokerHost: String, notificationURL:String ) {
     try {
-      val id=getSubscriptionId(contextBrokerURL,notificationURL)
-      val msg = Http(contextBrokerURL+"/"+id).method("DELETE").asString.code
+      val id=getSubscriptionId(contextBrokerHost,notificationURL)
+      val msg = Http("http://"+contextBrokerHost+"/subscriptions/"+id).method("DELETE").asString.code
       println(msg)
     } catch {
       case _: Exception => null
@@ -17,9 +22,9 @@ object CBRequests {
     }
   }
 
-  def getSubscriptionId(contextBrokerURL: String, notificationURL:String ): String = {
+  def getSubscriptionId(contextBrokerHost: String, notificationURL:String ): String = {
     try {
-      val msg = parse(Http(contextBrokerURL).asString.body)
+      val msg = parse(Http("http://"+contextBrokerHost+"/subscriptions").asString.body)
       val id=for {
         JArray(objList) <- msg
         JObject(obj) <- objList
@@ -37,4 +42,20 @@ object CBRequests {
     }
   }
 
+  /**
+    * Method for killing a Job running in a flink cluster
+    * @param flinkHost Flink Job Manager host in the form of IP:Port Ex(127.0.0.1:1026)
+    * @param jobId Flink Job ID
+    */
+  def killJob(flinkHost: String, jobId:String ) {
+    try {
+      val msg = Http("http://"+flinkHost+"/jobs/"+jobId)
+        .method("PATCH")
+        .asString.code
+      println(msg)
+    } catch {
+      case _: Exception => null
+      case _: Error => null
+    }
+  }
 }
