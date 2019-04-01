@@ -121,7 +121,6 @@ under the License.
 									<exclude>org.slf4j:*</exclude>
 									<exclude>log4j:*</exclude>
 									<exclude>org.apache.flink</exclude>
-									<exclude>org.apache.flink</exclude>
 									<exclude>org.scala-lang</exclude>
 								</excludes>
 							</artifactSet>

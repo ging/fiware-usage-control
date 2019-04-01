@@ -24,27 +24,28 @@ object AveragePurchase {
     // eventStream.print()
 
     // Process event stream
-    val processedDataStream = eventStream
-      .flatMap(event => event.entities)
-      .map(entity => {
-        val id = entity.attrs("_id").value.toString
-        val items = entity.attrs("items").value.asInstanceOf[List[Map[String,Any]]]
-        items.map(product => {
-          val productName = product("desc").asInstanceOf[String]
-          val price = product("net_am").asInstanceOf[Number].floatValue() * product("n_unit").asInstanceOf[Number].floatValue()
-          SupermarketProduct(id, productName, price)
-        })
-      })
-      .map(products => products.map(_.price).sum)
+//    val processedDataStream = eventStream
+//      .flatMap(event => event.entities)
+//      .map(entity => {
+//        val id = entity.attrs("_id").value.toString
+//        val items = entity.attrs("items").value.asInstanceOf[List[Map[String,Any]]]
+//        items.map(product => {
+//          val productName = product("desc").asInstanceOf[String]
+//          val price = product("net_am").asInstanceOf[Number].floatValue() * product("n_unit").asInstanceOf[Number].floatValue()
+//          SupermarketProduct(id, productName, price)
+//        })
+//      })
+//      .map(products => products.map(_.price).sum)
      // .timeWindowAll(Time.seconds(15))
      // .aggregate(new AverageAggregate)
 
     // Post average to new entity in Orion Context Broker
     // OrionSink.addSink(processedDataStream)
     // print the results with a single thread, rather than in parallel
-    processedDataStream.print().setParallelism(1)
+//    processedDataStream.print().setParallelism(1)
+    val objStream = eventStream.map(_=>OrionSinkObject("{'msg':'hola'}","http://138.4.7.110:5000/fiware",ContentType.JSON, HTTPMethod.POST))
+    OrionSink.addSink(objStream)
     env.execute("Socket Window NgsiEvent")
-
   }
 
   case class SupermarketProduct(id: String, desc: String,  price: Float) extends  Serializable {
