@@ -18,6 +18,7 @@ ENV INIT_DAEMON_STEP flink_master_init
 #Conf for sending logs to fluent
 ENV FLUENT_HOST=fluent
 ENV FLUENT_PORT=24224
+ENV ACCESS_TOKEN=XXXXX
 
 
 COPY wait-for-step.sh /

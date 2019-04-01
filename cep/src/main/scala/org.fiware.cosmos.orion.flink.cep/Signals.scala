@@ -21,8 +21,8 @@ object Signals {
 
   private def performPunishment(punishment: String): Unit = {
     punishment match {
-      case "UNSUBSCRIBE" => println("unsubscribe")//CBRequests.unsubscribe("http://138.4.22.138:1026/v2/subscriptions","http://138.4.7.94:9001/notify")
-      case "KILL_JOB" => println("Kill Job: " + JobId.jobId)
+      case "UNSUBSCRIBE" => println("unsubscribe")//CBRequests.unsubscribe("138.4.22.138:1026","http://138.4.7.94:9001/notify")
+      case "KILL_JOB" => println("Kill Job: " + JobId.jobId) //killJob()
       case "MONETIZE"=> println("$$$$$$$$$$")
     }
   }
