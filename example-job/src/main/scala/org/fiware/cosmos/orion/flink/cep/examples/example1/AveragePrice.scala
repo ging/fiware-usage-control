@@ -1,8 +1,8 @@
 package org.fiware.cosmos.orion.flink.cep.examples.example1
 
 import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
-import org.apache.flink.streaming.api.windowing.time.Time
 import org.fiware.cosmos.orion.flink.connector._
+import org.apache.flink.streaming.api.windowing.time.Time
 
 
 /**
@@ -11,7 +11,7 @@ import org.fiware.cosmos.orion.flink.connector._
   *
   */
 //org.fiware.cosmos.orion.flink.cep.examples.example1.AveragePurchase
-object AveragePurchase {
+object AveragePrice {
 //  final val URL_CB = "http://138.4.22.138:1026/v2/entities/home-avg/attrs"
   final val CONTENT_TYPE = ContentType.JSON
   final val METHOD = HTTPMethod.POST
@@ -19,9 +19,6 @@ object AveragePurchase {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     // Create Orion Source. Receive notifications on port 9001
     val eventStream = env.addSource(new OrionSource(9001))
-
-    // Sink directo => Matar
-    // eventStream.print()
 
     // Process event stream
     val processedDataStream = eventStream
@@ -36,19 +33,12 @@ object AveragePurchase {
         })
       })
       .map(products => products.map(_.price).sum)
-     // .timeWindowAll(Time.seconds(15))
-     // .aggregate(new AverageAggregate)
+      .timeWindowAll(Time.seconds(15))
+      .aggregate(new AverageAggregate)
 
-    // Post average to new entity in Orion Context Broker
-    // OrionSink.addSink(processedDataStream)
-    // print the results with a single thread, rather than in parallel
+    // Print the results with a single thread, rather than in parallel
     processedDataStream.print().setParallelism(1)
     env.execute("Socket Window NgsiEvent")
-
-  }
-
-  case class SupermarketProduct(id: String, desc: String,  price: Float) extends  Serializable {
-    override def toString :String = { "\r\n{ \"id\":  \"" + id + "\", \"desc\": \"" + desc + "\", \"price\": " + price + "}" }
   }
 
 }
