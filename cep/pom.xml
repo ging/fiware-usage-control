@@ -126,7 +126,7 @@
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.fiware.cosmos.orion.flink.cep.CEPMonitoring</mainClass>
+                                    <mainClass>org.fiware.cosmos.orion.flink.cep.CEPMonitoring2</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
