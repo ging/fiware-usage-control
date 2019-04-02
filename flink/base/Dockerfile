@@ -37,7 +37,7 @@ RUN   apt-get update \
 ENV FLINK_HOME /usr/local/flink
 ENV PATH $PATH:$FLINK_HOME/bin
 
-COPY jars/. /usr/local/flink/lib
+COPY libs/. /usr/local/flink/lib
 
 RUN   rm /usr/local/flink/lib/log4j-1.2.17.jar /usr/local/flink/lib/slf4j-log4j12-1.7.15.jar
 
