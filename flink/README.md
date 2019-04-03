@@ -1,7 +1,3 @@
-[![Build Status](https://travis-ci.org/big-data-europe/docker-flink.svg?branch=master)](https://travis-ci.org/big-data-europe/docker-flink)
-[![Twitter](https://img.shields.io/twitter/follow/BigData_Europe.svg?style=social)](https://twitter.com/BigData_Europe)
-# Flink docker
-
 Apache Flink docker images to:
 * Setup a standalone [Apache Flink](http://flink.apache.org/) cluster running one Flink Master and multiple Flink workers
 * Build Flink applications in Scala, Java or Python to run on a Flink cluster
@@ -51,7 +47,7 @@ Currently supported versions:
 
 ## Using Docker Compose
 
-Add the following services to your `docker-compose.yml` to integrate a Flink master and Flink worker in [your BDE pipeline](https://github.com/big-data-europe/app-bde-pipeline):
+Add the following services to your `docker-compose.yml` to integrate a Flink master and Flink worker 
 ```yml
 flink-master:
    image: bde2020/flink-master:1.7.2-hadoop2.8
