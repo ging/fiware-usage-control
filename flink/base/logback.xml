@@ -31,16 +31,17 @@
 		<host>${fluent.host}</host>
 		<port>${fluent.port}</port>
 		<accessToken>${access.token}</accessToken>
+		<filt>flink</filt>
 		<includeStacktrace>true</includeStacktrace>
-  	</appender>
+    </appender>
   	
   	<!-- ... and this one should be attached to the root -->
-  	<appender name="HTTP" class="ch.qos.logback.classic.AsyncAppender">
+    <appender name="HTTP" class="ch.qos.logback.classic.AsyncAppender">
     	<appender-ref ref="HTTP-APPENDER" />
-  	</appender>
+    </appender>
 	 
 	 
-	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>%m%n</pattern>
 			<charset>utf8</charset>
