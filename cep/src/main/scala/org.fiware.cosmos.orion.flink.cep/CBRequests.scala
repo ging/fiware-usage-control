@@ -9,12 +9,11 @@ object CBRequests {
   /**
     * Method for delelting a Subscription in Orion context Broker
     * @param contextHost Context Broker host in the form of IP:Port Ex(127.0.0.1:1026)
-    * @param notificationURL URL of the notification fiel of the subscription
+    * @param subscriptionId subscriptionId
     */
-  def unsubscribe(contextBrokerHost: String, notificationURL:String ) {
+  def unsubscribe(contextBrokerHost: String, subscriptionId:String ) {
     try {
-      val id=getSubscriptionId(contextBrokerHost,notificationURL)
-      val msg = Http("http://"+contextBrokerHost+"/subscriptions/"+id).method("DELETE").asString.code
+      val msg = Http("http://"+contextBrokerHost+"/subscriptions/"+subscriptionId).method("DELETE").asString.code
       println(msg)
     } catch {
       case _: Exception => null
