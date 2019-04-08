@@ -43,19 +43,17 @@ object CEPMonitoring1{
     val countPattern2 = Pattern.begin[Entity]("events" )
       .timesOrMore(Policies.numMaxEvents+1).within(Time.seconds(Policies.facturationTime))
     CEP.pattern(entityStream, countPattern2).select(events =>
-      Signals.createAlert("COUNT_POLICY", events, "UNSUBSCRIBE"))
+      Signals.createAlert(Policy.COUNT_POLICY, events, Punishment.UNSUBSCRIBE))
 
     // Second pattern: Source -> Sink. Aggregation TimeWindow
     val aggregatePattern = Pattern.begin[ExecutionGraph]("start", AfterMatchSkipStrategy.skipPastLastEvent())
       .where(Policies.executionGraphChecker(_, "source"))
-      .notFollowedBy("middle").where(Policies.executionGraphChecker(_, "aggregation"))
+      .notFollowedBy("middle").where(Policies.executionGraphChecker(_, "aggregation",Policies.aggregateTime))
       .followedBy("end").where(Policies.executionGraphChecker(_, "sink")).timesOrMore(1)
     CEP.pattern(operationStream, aggregatePattern).select(events =>
-      Signals.createAlert("AGGREGATION_POLICY", events, "KILL_JOB"))
+      Signals.createAlert(Policy.AGGREGATION_POLICY, events, Punishment.KILL_JOB))
 
     env.execute("CEP Monitoring")
   }
-
-
 
 }

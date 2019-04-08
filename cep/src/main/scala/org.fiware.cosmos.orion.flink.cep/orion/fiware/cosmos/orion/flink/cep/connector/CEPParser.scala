@@ -12,19 +12,19 @@ import scala.util.matching.Regex
 object CEPParser {
   implicit val formats = DefaultFormats
 
-  val ngsiPattern : Regex = ".*? org.fiware.cosmos.orion.flink.connector.OrionHttpHandler *-* *(.*)".r
-  val executionGraphPattern : Regex = ".*? org.apache.flink.runtime.executiongraph.ExecutionGraph *-* *(.*) \\(\\d+/\\d+\\).*".r
-  val endExecutionGraphPattern : Regex = ".*? org.apache.flink.runtime.jobmaster.JobMaster *-* *(.*)".r
-  val jobIdPattern : Regex = ".*? org.apache.flink.runtime.jobmaster.JobManagerRunner *-* *JobManager runner for job Socket Window NgsiEvent \\((\\w*)\\) .*".r
+  val ngsiPattern : Regex = ".*?org.fiware.cosmos.orion.flink.connector.OrionHttpHandler *-* *(.*)".r
+  val executionGraphPattern : Regex = ".*?org.apache.flink.runtime.executiongraph.ExecutionGraph *-* *(.*) \\(\\d+/\\d+\\).*".r
+  val endExecutionGraphPattern : Regex = ".*?org.apache.flink.runtime.jobmaster.JobMaster *-* *(.*)".r
+  val jobIdPattern : Regex = ".*?org.apache.flink.runtime.jobmaster.JobManagerRunner *-* *JobManager runner for job Socket Window NgsiEvent \\((\\w*)\\) .*".r
 
-  final def parseGenericMessage(req : FullHttpRequest) : Seq[Log] = {
+  final def parseGenericMessage(req : FullHttpRequest) : Log = {
     val headerEntries = req.headers().entries()
     // Retrieve body content and convert from Byte array to String
     val content = req.content()
     val byteBufUtil = ByteBufUtil.readBytes(content.alloc, content, content.readableBytes)
     val jsonBodyString = byteBufUtil.toString(0,content.capacity(),CharsetUtil.US_ASCII)
     content.release()
-    parse(jsonBodyString).extract[Seq[Log]]
+    parse(jsonBodyString).extract[Log]
   }
 
 

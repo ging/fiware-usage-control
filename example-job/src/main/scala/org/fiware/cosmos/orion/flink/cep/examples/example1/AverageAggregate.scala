@@ -2,7 +2,6 @@ package org.fiware.cosmos.orion.flink.cep.examples.example1
 
 
 import org.apache.flink.api.common.functions.AggregateFunction
-import org.fiware.cosmos.orion.flink.cep.examples.example1.AveragePurchase.SupermarketProduct
 
 private class AverageAggregate extends AggregateFunction[Float, (Double, Double), Double] {
   override def createAccumulator() = (0, 0)

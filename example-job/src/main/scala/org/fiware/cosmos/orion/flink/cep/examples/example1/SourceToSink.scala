@@ -10,9 +10,8 @@ import org.fiware.cosmos.orion.flink.connector._
   * FIWARE Data Usage Control
   *
   */
-//org.fiware.cosmos.orion.flink.cep.examples.example1.AveragePurchase
+//org.fiware.cosmos.orion.flink.cep.examples.example1.SourceToSink
 object SourceToSink {
-//  final val URL_CB = "http://138.4.22.138:1026/v2/entities/home-avg/attrs"
   final val CONTENT_TYPE = ContentType.JSON
   final val METHOD = HTTPMethod.POST
   def main(args: Array[String]): Unit = {

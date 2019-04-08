@@ -5,13 +5,13 @@ import org.fiware.cosmos.orion.flink.cep.orion.fiware.cosmos.orion.flink.cep.con
 import scala.collection._
 
 object Signals {
-  def createAlert(signal: String, content: Map[String,Iterable[Any]], punishment: String) : Any = {
-    signal match {
-      case "COUNT_POLICY" => {
+  def createAlert(rule: Policy.Value, content: Map[String,Iterable[Any]], punishment: Punishment.Value) : Any = {
+    rule match {
+      case Policy.COUNT_POLICY => {
           val size = content("events").size
           println(s"Ya has recibido ${size} eventos. El máximo permitido es ${Policies.numMaxEvents} eventos en ${Policies.facturationTime} segundos")
       }
-      case "AGGREGATION_POLICY" => {
+      case Policy.AGGREGATION_POLICY => {
           println(s"El procesado de los datos debe hacerse de forma agregada y utilizando una ventana mayor o igual que ${Policies.aggregateTime}")
       }
     }
@@ -19,11 +19,11 @@ object Signals {
     null
   }
 
-  private def performPunishment(punishment: String): Unit = {
+  private def performPunishment(punishment: Punishment.Value): Unit = {
     punishment match {
-      case "UNSUBSCRIBE" => println("unsubscribe")//CBRequests.unsubscribe("138.4.22.138:1026","http://138.4.7.94:9001/notify")
-      case "KILL_JOB" => println("Kill Job: " + JobId.jobId) //killJob()
-      case "MONETIZE"=> println("$$$$$$$$$$")
+      case Punishment.UNSUBSCRIBE => println("Unsubscribe")//CBRequests.unsubscribe("138.4.22.138:1026","http://138.4.7.94:9001/notify")
+      case Punishment.KILL_JOB => println("Kill Job: " + JobId.jobId) //killJob()
+      case Punishment.MONETIZE => println("$$$$$$$$$$")
     }
   }
 }

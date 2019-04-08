@@ -43,26 +43,29 @@ object CEPMonitoring2{
     // First pattern: At least N events in T. 12h -14h
     val countPattern = Pattern.begin[Entity]("events" )
         .timesOrMore(Policies.numMaxEvents+1).within(Time.seconds(Policies.facturationTime))
-        .where(_=>Policies.checkTime(12,14,true))
+        .where(_=>Policies.checkTime("12:00","14:00", true))
+
     CEP.pattern(entityStream, countPattern).select(events =>
-      Signals.createAlert("COUNT_POLICY", events, "MONETIZE"))
+      Signals.createAlert(Policy.COUNT_POLICY, events, Punishment.MONETIZE))
 
 
     // First pattern: At least N events in T. Any other time
     val countPattern2 = Pattern.begin[Entity]("events" )
       .timesOrMore(Policies.numMaxEvents+1).within(Time.seconds(Policies.facturationTime))
-      .where(_=>Policies.checkTime(12,14,false))
+      .where(_=>Policies.checkTime("12:00","14:00", false))
+
     CEP.pattern(entityStream, countPattern2).select(events =>
-      Signals.createAlert("COUNT_POLICY", events, "UNSUBSCRIBE"))
+      Signals.createAlert(Policy.COUNT_POLICY, events, Punishment.UNSUBSCRIBE))
 
 
     // Second pattern: Source -> Sink. Aggregation TimeWindow
     val aggregatePattern = Pattern.begin[ExecutionGraph]("start", AfterMatchSkipStrategy.skipPastLastEvent())
       .where(Policies.executionGraphChecker(_, "source"))
-      .notFollowedBy("middle").where(Policies.executionGraphChecker(_, "aggregation"))
+      .notFollowedBy("middle").where(Policies.executionGraphChecker(_, "aggregation", Policies.aggregateTime))
       .followedBy("end").where(Policies.executionGraphChecker(_, "sink")).timesOrMore(1)
+
     CEP.pattern(operationStream, aggregatePattern).select(events =>
-      Signals.createAlert("AGGREGATION_POLICY", events, "KILL_JOB"))
+      Signals.createAlert(Policy.AGGREGATION_POLICY, events, Punishment.KILL_JOB))
 
     env.execute("CEP Monitoring")
   }

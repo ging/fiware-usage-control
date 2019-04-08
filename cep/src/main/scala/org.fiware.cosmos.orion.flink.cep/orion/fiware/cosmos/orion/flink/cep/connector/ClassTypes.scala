@@ -52,5 +52,5 @@ object MapToAttributeConverter{
 /**
   * Log4j JSON Log
   */
-case class Log(date: Float, pri: String, time: String, host: String, ident: String, message: String) extends Serializable
+case class Log(timestamp: Float, level: String, host: String, message: String) extends Serializable
 case class ExecutionGraph(msg: String)
