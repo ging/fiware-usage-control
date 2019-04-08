@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export JAVA_OPTS="-Dfluent.host=$FLUENT_HOST:$FLUENT_PORT -Daccess.token=$ACCESS_TOKEN"
+export JAVA_OPTS="$JAVA_OPTS -Dfluent.host=$FLUENT_HOST -Dfluent.port=$FLUENT_PORT -Daccess.token=$ACCESS_TOKEN" 
 
 if [ ! -z "$SERVICE_PRECONDITION" ] ;then
     function wait_for_it()

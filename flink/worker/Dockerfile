@@ -1,4 +1,4 @@
-FROM ging/flink-base:1.6.1-hadoop2.8
+FROM ging/flink-base:1.7.2-hadoop2.8
 
 MAINTAINER Andrés Muñoz <andres.max36@gmail.com>
 
