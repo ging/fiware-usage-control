@@ -54,7 +54,7 @@ class S(BaseHTTPRequestHandler):
         args=pastebin_url.get("filename").split("/")
         jarId=args[len(args)-1]
         print("About Uploaded Jar:%s"%pastebin_url)
-	os.chdir('../..')
+        os.chdir('../..')
         return jarId
    
     def run_job(self,jarId,flinkEndpoint):
