@@ -33,7 +33,7 @@ class S(BaseHTTPRequestHandler):
         directory=self.execute_maven()
         jarId=self.upload_jar(flinkEndpoint,directory)
         jobId=self.run_job(jarId,flinkEndpoint)
-        self.delete_jar(jarId)
+        self.delete_jar(jarId,flinkEndpoint)
         self._set_headers()
 
     def execute_maven(self):
