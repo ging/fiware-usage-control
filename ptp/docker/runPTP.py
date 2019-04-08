@@ -1,6 +1,9 @@
-from pathlib import Path    
+#!/usr/bin/env python
+
+from pathlib import Path   
+from random import randint
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import socketserver,subprocess,os,requests,json,time
+import socketserver,subprocess,os,requests,json,time,shutil
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -24,23 +27,28 @@ class S(BaseHTTPRequestHandler):
         print(post_data)
         ##Call function to generate cep code then call to execute maven, teh code must be in the 
         #current directory
-        self.execute_maven()
-        jarId=self.upload_jar(flinkEndpoint)
+        directory=self.execute_maven()
+        jarId=self.upload_jar(flinkEndpoint,directory)
         jobId=self.run_job(jarId,flinkEndpoint)
         self._set_headers()
 
     
     def execute_maven(self):
-        mypath = './cep'
+        os.chdir('./')
+        prefix=str(randint(0, 9)+time.time())
+        shutil.copytree('./cep', './cep'+prefix)
+        mypath = './cep'+prefix
         os.chdir(mypath)
         p = subprocess.Popen(["mvn", "package"], stdout=subprocess.PIPE)
         output, err = p.communicate()
+        os.chdir("..")
         print (output)
+        return mypath
     
-    def upload_jar(self,flinkEndpoint):
-        mypath = Path().absolute()/'target'
+    def upload_jar(self,flinkEndpoint,directory):
+        mypath = directory+'/target'
         os.chdir(mypath)
-        files = os.listdir(mypath)
+        files = os.listdir('./')
         jarName = ""
         for name in files:
             if 'cep' in name and 'original' not in name:
@@ -55,6 +63,7 @@ class S(BaseHTTPRequestHandler):
         jarId=args[len(args)-1]
         print("About Uploaded Jar:%s"%pastebin_url)
         os.chdir('../..')
+        shutil.rmtree('./'+directory, ignore_errors=True)
         return jarId
    
     def run_job(self,jarId,flinkEndpoint):
