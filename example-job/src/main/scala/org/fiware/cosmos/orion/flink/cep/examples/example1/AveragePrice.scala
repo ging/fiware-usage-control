@@ -10,9 +10,9 @@ import org.apache.flink.streaming.api.windowing.time.Time
   * FIWARE Data Usage Control
   *
   */
-//org.fiware.cosmos.orion.flink.cep.examples.example1.AveragePurchase
+
+//org.fiware.cosmos.orion.flink.cep.examples.example1.AveragePrice
 object AveragePrice {
-//  final val URL_CB = "http://138.4.22.138:1026/v2/entities/home-avg/attrs"
   final val CONTENT_TYPE = ContentType.JSON
   final val METHOD = HTTPMethod.POST
   def main(args: Array[String]): Unit = {
@@ -28,11 +28,13 @@ object AveragePrice {
         val items = entity.attrs("items").value.asInstanceOf[List[Map[String,Any]]]
         items.map(product => {
           val productName = product("desc").asInstanceOf[String]
-          val price = product("net_am").asInstanceOf[Number].floatValue() * product("n_unit").asInstanceOf[Number].floatValue()
+          val unitPrice =  product("net_am").asInstanceOf[Number].floatValue()
+          val unitNumber = product("n_unit").asInstanceOf[Number].floatValue()
+          val price = unitPrice * unitNumber
           SupermarketProduct(id, productName, price)
         })
       })
-      .map(products => products.map(_.price).sum)
+      .map(_.map(_.price).sum)
       .timeWindowAll(Time.seconds(15))
       .aggregate(new AverageAggregate)
 

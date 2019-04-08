@@ -59,11 +59,18 @@ class HttpHandler(
         }
 
         if (sc != null) {
-          CEPParser.parseGenericMessage(req)
-            .filter(_ != null)
-            .map(CEPParser.parseMessage)
-            .filter(_ != null)
-            .foreach(sc.collect)
+//          CEPParser.parseGenericMessage(req)
+//            .filter(_ != null)
+//            .map(CEPParser.parseMessage)
+//            .filter(_ != null)
+//            .foreach(sc.collect)
+          val pgm = CEPParser.parseGenericMessage(req)
+          if (pgm != null) {
+            val pm = CEPParser.parseMessage(pgm)
+            if (pm != null) {
+              sc.collect(pm)
+            }
+          }
         }
 
         if (HttpUtil.is100ContinueExpected(req)) {
