@@ -7,7 +7,8 @@ echo "Configuring Job Manager on this node"
 sed -i -e "s/jobmanager.rpc.address: localhost/jobmanager.rpc.address: `hostname -i`/g" /usr/local/flink/conf/flink-conf.yaml
 echo "blob.server.port: 6124" >> /usr/local/flink/conf/flink-conf.yaml
 echo "query.server.port: 6125" >> /usr/local/flink/conf/flink-conf.yaml
-echo "env.java.opts: -Dfluent.host=${FLUENT_HOST}:${FLUENT_PORT}" >> /usr/local/flink/conf/flink-conf.yaml
+echo "env.java.opts: -Dfluent.host=${FLUENT_HOST} -Dfluent.port=${FLUENT_PORT} -Daccess.token=${ACCESS_TOKEN}" >> /usr/local/flink/conf/flink-conf.yaml
+
 /usr/local/flink/bin/jobmanager.sh start #cluster #local
 echo "Cluster started."
 #sleep infinity

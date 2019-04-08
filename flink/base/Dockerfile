@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:8
 
 MAINTAINER Andrés Muñoz <andres.max36@gmail.com>
 
@@ -6,7 +6,7 @@ MAINTAINER Andrés Muñoz <andres.max36@gmail.com>
 RUN ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''
 RUN cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/*
 
-ENV FLINK_VERSION=1.6.1
+ENV FLINK_VERSION=1.7.2
 ENV HADOOP_VERSION=28
 ENV SCALA_VERSION=2.11
 
@@ -19,7 +19,6 @@ ENV INIT_DAEMON_STEP flink_master_init
 ENV FLUENT_HOST=fluent
 ENV FLUENT_PORT=24224
 ENV ACCESS_TOKEN=XXXXX
-
 
 COPY wait-for-step.sh /
 COPY execute-step.sh /
@@ -38,8 +37,12 @@ RUN   apt-get update \
 ENV FLINK_HOME /usr/local/flink
 ENV PATH $PATH:$FLINK_HOME/bin
 
+COPY libs/. /usr/local/flink/lib
+
+RUN   rm /usr/local/flink/lib/log4j-1.2.17.jar /usr/local/flink/lib/slf4j-log4j12-1.7.15.jar
+
 #config files (template)
-ADD log4j.properties /usr/local/flink/conf/
+ADD logback.xml /usr/local/flink/conf/
 #ADD flink-conf.yaml /usr/local/flink/conf/
 #ADD masters /usr/local/flink/conf/
 #ADD slaves /usr/local/flink/conf/

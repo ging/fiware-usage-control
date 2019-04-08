@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    
+    <!-- Take both of these LOGDNA appenders -->
+    <!-- this one is a plain old HTTP transport -->
+    <appender name="HTTP-APPENDER" class="es.upm.dit.ging.utils.HttpAppender">
+		<host>138.4.7.110</host>
+		<port>3000</port>
+		<accessToken>${access.token}</accessToken>
+		<filt>flink</filt>
+		<includeStacktrace>true</includeStacktrace>
+  	</appender>
+  	
+  	<!-- ... and this one should be attached to the root -->
+  	<appender name="HTTP" class="ch.qos.logback.classic.AsyncAppender">
+    	<appender-ref ref="HTTP-APPENDER" />
+  	</appender>
+	 
+	 
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%m%n</pattern>
+			<charset>utf8</charset>
+		</encoder>
+	</appender> 
+	  
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    	<appender-ref ref="HTTP" /><!-- the async one -->
+  	</root>
+</configuration>

@@ -1,4 +1,4 @@
-FROM ging/flink-base:1.6.1-hadoop2.8
+FROM ging/flink-base:1.7.2-hadoop2.8
 
 MAINTAINER Andrés Muñoz <andres.max36@gmail.com>
 
@@ -8,6 +8,7 @@ MAINTAINER Andrés Muñoz <andres.max36@gmail.com>
 COPY master.sh /
 #RUN chmod +x /usr/local/flink/bin/jobmanager.sh
 ENV FLINK_MASTER_LOG /usr/local/flink/log
+
 EXPOSE 6123 22 8080
 
 CMD ["/bin/bash", "/master.sh"]
