@@ -17,6 +17,9 @@ class S(BaseHTTPRequestHandler):
 
     def do_HEAD(self):
         self._set_headers()
+    
+    def do_DELETE (self):
+        self._set_headers()
         
     def do_POST(self):
         # Doesn't do anything with posted data
@@ -30,9 +33,9 @@ class S(BaseHTTPRequestHandler):
         directory=self.execute_maven()
         jarId=self.upload_jar(flinkEndpoint,directory)
         jobId=self.run_job(jarId,flinkEndpoint)
+        self.delete_jar(jarId)
         self._set_headers()
 
-    
     def execute_maven(self):
         os.chdir('./')
         prefix=str(randint(0, 9)+time.time())
@@ -72,7 +75,11 @@ class S(BaseHTTPRequestHandler):
         pastebin_url = json.loads(r.text)
         jobID=pastebin_url.get("id")
         print("About the running Job:%s"%pastebin_url)    
-        return jobID        
+        return jobID  
+    
+    def delete_jar(self,jarId,flinkEndpoint):
+        FLINK_ENDPOINT = "http://"+flinkEndpoint+"/jars/"+jarId
+        r = requests.delete(url = FLINK_ENDPOINT)
         
 def run(server_class=HTTPServer, handler_class=S, port=8092):
     server_address = ('', port)
