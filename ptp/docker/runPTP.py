@@ -25,7 +25,6 @@ class S(BaseHTTPRequestHandler):
         ##Call function to generate cep code then call to execute maven, teh code must be in the 
         #current directory
         self.execute_maven()
-        time.sleep(5)
         jarId=self.upload_jar(flinkEndpoint)
         jobId=self.run_job(jarId,flinkEndpoint)
         self._set_headers()
