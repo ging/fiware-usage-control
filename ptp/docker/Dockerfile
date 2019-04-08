@@ -64,11 +64,17 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && rm -f /tmp/apache-maven.tar.gz \
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
+RUN mkdir ./cep
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
-
+COPY runPTP.py ./
+COPY ./cep ./cep
+COPY requirements.txt ./
 COPY mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
 COPY settings-docker.xml /usr/share/maven/ref/
-#############################################################################
+RUN pip install --no-cache-dir -r requirements.txt
+
 #ENTRYPOINT ["/usr/local/bin/mvn-entrypoint.sh"]
-#CMD ["/bin/bash"]
+CMD ["python","./runPTP.py"]
+
+

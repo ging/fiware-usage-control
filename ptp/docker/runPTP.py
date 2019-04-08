@@ -25,32 +25,36 @@ class S(BaseHTTPRequestHandler):
         ##Call function to generate cep code then call to execute maven, teh code must be in the 
         #current directory
         self.execute_maven()
-        time.sleep(5)
         jarId=self.upload_jar(flinkEndpoint)
         jobId=self.run_job(jarId,flinkEndpoint)
         self._set_headers()
 
     
     def execute_maven(self):
-        originalPath= Path().absolute()
-        mypath = Path().absolute()/'cep'
+        mypath = './cep'
         os.chdir(mypath)
         p = subprocess.Popen(["mvn", "package"], stdout=subprocess.PIPE)
         output, err = p.communicate()
-        os.chdir(originalPath)
         print (output)
     
     def upload_jar(self,flinkEndpoint):
-        mypath = Path().absolute()/'cep'/'target'
-        print(mypath)
+        mypath = Path().absolute()/'target'
+        os.chdir(mypath)
+        files = os.listdir(mypath)
+        jarName = ""
+        for name in files:
+            if 'cep' in name and 'original' not in name:
+                jarName = name
+                print(name)
         FLINK_ENDPOINT = "http://"+flinkEndpoint+"/jars/upload"
         file_list = [  
-        ('jarfile', ('orion.flink.cep-1.0-SNAPSHOT.jar', open('orion.flink.cep-1.0-SNAPSHOT.jar', 'rb'), mypath))]
+        ('jarfile', (jarName, open(jarName, 'rb'), mypath))]
         r = requests.post(url = FLINK_ENDPOINT,  files=file_list) 
         pastebin_url = json.loads(r.text) 
         args=pastebin_url.get("filename").split("/")
         jarId=args[len(args)-1]
         print("About Uploaded Jar:%s"%pastebin_url)
+	os.chdir('../..')
         return jarId
    
     def run_job(self,jarId,flinkEndpoint):
