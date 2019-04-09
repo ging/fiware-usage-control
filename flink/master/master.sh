@@ -5,13 +5,12 @@
 
 forever start oauth2-example-client/server.js
 
-while [ ! -f access_token ]
+while [ ! -f /etc/oauth/access_token ]
 do
 sleep 1
 done
 
-source ./access_token
-rm -rf access_token
+source ./etc/oauth/access_token
 
 echo "Configuring Job Manager on this node"
 #sed -i -e "s/%jobmanager%/`hostname -i`/g" /usr/local/flink/conf/flink-conf.yaml

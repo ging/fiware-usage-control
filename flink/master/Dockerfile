@@ -21,6 +21,9 @@ RUN git clone -b usage-genova --single-branch https://github.com/ging/oauth2-exa
 # Install forever to run oauth client in backgroubnd
 RUN npm install forever -g
 
+# Create folder to store access token and share with workers
+RUN mkdir -p /etc/oauth
+
 # Copy config template
 RUN cd oauth2-example-client && \
     cp config.js.template config.js
