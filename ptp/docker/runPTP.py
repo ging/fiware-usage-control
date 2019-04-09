@@ -29,9 +29,7 @@ class S(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
         data = json.loads(post_data)
         modified_program = self.generate_cep_code(data)
-
-        print(modified_program) # <-- Write to disk instead of print
-
+        self.write_program(modified_program) # <-- Write to disk instead of print
         directory = self.execute_maven()
         previous_job_id = data["previousJobId"]
         kill_job = self.kill_job(previous_job_id, flink_endpoint)
@@ -88,9 +86,33 @@ class S(BaseHTTPRequestHandler):
     def generate_cep_code(self, data):
         return cep.createProgram(json.loads(data))
 
+    def write_program(self, code):
+    	f = open("./cep/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "r+")
+    	print ("Name of the file: ", f.name)
+    	lines= f.readlines()
+    	for x in lines:
+        	part1 = part1 + x
+        	count = count + 1
+        	if '// TODO' in x:
+        	    break
+    	count = 0
+    	for x in lines:
+        	count = count + 1
+        	if count > 42:
+            		part2 = part2 + x             
+    	f.close()
+    	w = open("./cep/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "w+")
+    	w.write(part1)
+    	w.close()
+    	u = open("./cep/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "a")
+    	u.write(code)
+    	u.write(part2)
+    	u.close()	
+
     def kill_job(self, job_id, flink_endpoint):
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jobs/" + job_id
         requests.patch(url = FLINK_ENDPOINT)
+
         
 def run(server_class=HTTPServer, handler_class=S, port=8092):
     server_address = ('', port)
