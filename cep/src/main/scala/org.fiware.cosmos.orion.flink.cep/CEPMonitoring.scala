@@ -41,7 +41,6 @@ object CEPMonitoring{
 
     // TODO
 
-    env.execute("CEP Monitoring")
   }
 
 }
