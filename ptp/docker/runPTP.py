@@ -80,6 +80,10 @@ class S(BaseHTTPRequestHandler):
     def delete_jar(self,jarId,flinkEndpoint):
         FLINK_ENDPOINT = "http://"+flinkEndpoint+"/jars/"+jarId
         r = requests.delete(url = FLINK_ENDPOINT)
+
+    def kill_job(self,jobId,flinkEndpoint):
+        FLINK_ENDPOINT = "http://"+flinkEndpoint+"/jobs/"+jobId
+        requests.patch(url = FLINK_ENDPOINT)
         
 def run(server_class=HTTPServer, handler_class=S, port=8092):
     server_address = ('', port)
