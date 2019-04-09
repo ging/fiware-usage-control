@@ -24,31 +24,35 @@ class S(BaseHTTPRequestHandler):
         
     def do_POST(self):
         # Doesn't do anything with posted data
-        flink_endpoint="138.4.7.94:8082"
+        flink_endpoint = "138.4.7.94:8082"
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
-        print(post_data)
-        modified_program = self.generate_cep_code(json.loads(post_data))
+        data = json.loads(post_data)
+        modified_program = self.generate_cep_code(data)
+
         print(modified_program) # <-- Write to disk instead of print
-        directory=self.execute_maven()
-        jarId=self.upload_jar(flink_endpoint,directory)
-        jobId=self.run_job(jarId,flink_endpoint)
-        self.delete_jar(jarId,flink_endpoint)
+
+        directory = self.execute_maven()
+        previous_job_id = data["previousJobId"]
+        kill_job = self.kill_job(previous_job_id, flink_endpoint)
+        jar_id = self.upload_jar(directory, flink_endpoint)
+        job_id = self.run_job(jar_id, flink_endpoint)
+        self.delete_jar(jar_id, flink_endpoint)
         self._set_headers()
 
     def execute_maven(self):
         os.chdir('./')
-        prefix=str(randint(0, 9)+time.time())
-        shutil.copytree('./cep', './cep'+prefix)
-        mypath = './cep'+prefix
+        prefix = str(randint(0, 9) + time.time())
+        shutil.copytree('./cep', './cep' + prefix)
+        mypath = './cep' + prefix
         os.chdir(mypath)
-        p = subprocess.Popen(["mvn", "package"], stdout=subprocess.PIPE)
+        p = subprocess.Popen(["mvn", "package"], stdout = subprocess.PIPE)
         output, err = p.communicate()
         os.chdir("..")
         print (output)
         return mypath
     
-    def upload_jar(self,flink_endpoint,directory):
+    def upload_jar(self, directory, flink_endpoint):
         mypath = directory+'/target'
         os.chdir(mypath)
         files = os.listdir('./')
@@ -57,33 +61,36 @@ class S(BaseHTTPRequestHandler):
             if 'cep' in name and 'original' not in name:
                 jarName = name
                 print(name)
-        FLINK_ENDPOINT = "http://"+flink_endpoint+"/jars/upload"
+        FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/upload"
         file_list = [  
         ('jarfile', (jarName, open(jarName, 'rb'), mypath))]
-        r = requests.post(url = FLINK_ENDPOINT,  files=file_list) 
+        r = requests.post(url = FLINK_ENDPOINT,  files = file_list) 
         pastebin_url = json.loads(r.text) 
-        args=pastebin_url["filename"].split("/")
-        jarId=args[len(args)-1]
+        args = pastebin_url["filename"].split("/")
+        jar_id = args[len(args) - 1]
         print("About Uploaded Jar:%s"%pastebin_url)
         os.chdir('../..')
-        shutil.rmtree('./'+directory, ignore_errors=True)
-        return jarId
+        shutil.rmtree('./' + directory, ignore_errors=True)
+        return jar_id
    
-    def run_job(self,jarId,flink_endpoint):
-        FLINK_ENDPOINT = "http://"+flink_endpoint+"/jars/"+jarId+"/run?allowNonRestoredState=true"
+    def run_job(self, jar_id, flink_endpoint):
+        FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/" + jar_id + "/run?allowNonRestoredState=true"
         r = requests.post(url = FLINK_ENDPOINT) 
         pastebin_url = json.loads(r.text)
-        jobID=pastebin_url.["id"]
+        job_id = pastebin_url["id"]
         print("About the running Job:%s"%pastebin_url)    
-        return jobID  
+        return job_id  
     
-    def delete_jar(self,jarId,flink_endpoint):
-        FLINK_ENDPOINT = "http://"+flink_endpoint+"/jars/"+jarId
+    def delete_jar(self, jar_id, flink_endpoint):
+        FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/" + jar_id
         r = requests.delete(url = FLINK_ENDPOINT)
     
     def generate_cep_code(self, data):
         return cep.createProgram(json.loads(data))
 
+    def kill_job(self, job_id, flink_endpoint):
+        FLINK_ENDPOINT = "http://" + flink_endpoint + "/jobs/" + job_id
+        requests.patch(url = FLINK_ENDPOINT)
         
 def run(server_class=HTTPServer, handler_class=S, port=8092):
     server_address = ('', port)
