@@ -1,7 +1,7 @@
 package org.fiware.cosmos.orion.flink.cep
 
 import org.apache.flink.streaming.api.scala._
-import org.apache.flink.cep.nfa.AfterMatchSkipStrategy
+import org.apache.flink.cep.nfa.aftermatch.AfterMatchSkipStrategy
 import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.fiware.cosmos.orion.flink.cep.connector._
@@ -38,7 +38,6 @@ object CEPMonitoring2{
       .map(_.left.get )
       .flatMap(_.entities)
 
-    operationStream.print()
 
     // First pattern: At least N events in T. 12h -14h
     val countPattern = Pattern.begin[Entity]("events" )

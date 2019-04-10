@@ -1,6 +1,6 @@
 package org.fiware.cosmos.orion.flink.cep
 
-import org.apache.flink.cep.nfa.AfterMatchSkipStrategy
+import org.apache.flink.cep.nfa.aftermatch.AfterMatchSkipStrategy
 import org.apache.flink.cep.scala.CEP
 import org.apache.flink.cep.scala.pattern.Pattern
 import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
@@ -31,13 +31,11 @@ object CEPMonitoring{
       .flatMap(_.msg.split(" -> "))
       .map(ExecutionGraph)
 
-    // Entity Stream
-    val entityStream : DataStream[Entity] = stream
-      .filter(_.isLeft)
-      .map(_.left.get )
-      .flatMap(_.entities)
-
-    operationStream.print()
+      // Entity Stream
+      val entityStream : DataStream[Entity] = stream
+        .filter(_.isLeft)
+        .map(_.left.get )
+        .flatMap(_.entities)
 
     // TODO
 
