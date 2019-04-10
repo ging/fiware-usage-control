@@ -4,7 +4,7 @@ from pathlib import Path
 from random import randint
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import socketserver,subprocess,os,requests,json,time,shutil
-import cep
+import cepCode
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -83,7 +83,7 @@ class S(BaseHTTPRequestHandler):
         r = requests.delete(url = FLINK_ENDPOINT)
     
     def generate_cep_code(self, data):
-        return cep.createProgram(data)
+        return cepCode.createProgram(data)
 
     def write_program(self, code, prefix):
         os.chdir('./')
