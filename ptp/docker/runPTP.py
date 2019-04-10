@@ -88,8 +88,6 @@ class S(BaseHTTPRequestHandler):
     def write_program(self, code, prefix):
         os.chdir('./')
         shutil.copytree('./cep', './cep' + prefix)
-        print("xxxxxx")
-        print(code)
         f = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "r+")
         print ("Name of the file: ", f.name)
         part1 = ""
@@ -109,8 +107,6 @@ class S(BaseHTTPRequestHandler):
         w.write(part1)
         w.close()
         u = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "a")
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<")
-        print(code)
         u.write(code)
         u.write(part2)
         u.close()	
