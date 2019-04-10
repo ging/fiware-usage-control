@@ -1,7 +1,7 @@
 package org.fiware.cosmos.orion.flink.cep
 
 import org.apache.flink.streaming.api.scala._
-import org.apache.flink.cep.nfa.AfterMatchSkipStrategy
+import org.apache.flink.cep.nfa.aftermatch.AfterMatchSkipStrategy
 import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.fiware.cosmos.orion.flink.cep.connector._

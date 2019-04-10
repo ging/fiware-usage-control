@@ -1,6 +1,6 @@
 package org.fiware.cosmos.orion.flink.cep
 
-import org.apache.flink.cep.nfa.AfterMatchSkipStrategy
+import org.apache.flink.cep.nfa.aftermatch.AfterMatchSkipStrategy
 import org.apache.flink.cep.scala.CEP
 import org.apache.flink.cep.scala.pattern.Pattern
 import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
@@ -41,6 +41,7 @@ object CEPMonitoring{
 
     // TODO
 
+    //env.execute("CEP Monitoring")
   }
 
 }

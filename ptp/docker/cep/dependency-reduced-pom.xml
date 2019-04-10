@@ -22,7 +22,6 @@
                   <exclude>com.google.code.findbugs:jsr305</exclude>
                   <exclude>org.slf4j:*</exclude>
                   <exclude>log4j:*</exclude>
-                  <exclude>org.apache.flink</exclude>
                   <exclude>org.scala-lang</exclude>
                 </excludes>
               </artifactSet>
@@ -132,13 +131,13 @@
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-scala_2.11</artifactId>
-          <version>1.5.4</version>
+          <version>1.7.2</version>
           <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-streaming-scala_2.11</artifactId>
-          <version>1.5.4</version>
+          <version>1.7.2</version>
           <scope>compile</scope>
         </dependency>
         <dependency>
@@ -152,33 +151,9 @@
   </profiles>
   <dependencies>
     <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-scala_2.11</artifactId>
-      <version>1.5.4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-streaming-scala_2.11</artifactId>
-      <version>1.5.4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-cep-scala_2.11</artifactId>
-      <version>1.5.4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
       <version>2.11.12</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-kafka-0.11_2.11</artifactId>
-      <version>1.5.4</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -198,7 +173,7 @@
     <scala.version>2.11.12</scala.version>
     <scala.binary.version>2.11</scala.binary.version>
     <play2.version>2.4.6</play2.version>
-    <flink.version>1.5.4</flink.version>
+    <flink.version>1.7.2</flink.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>
