@@ -31,13 +31,11 @@ object CEPMonitoring{
       .flatMap(_.msg.split(" -> "))
       .map(ExecutionGraph)
 
-    // Entity Stream
-    val entityStream : DataStream[Entity] = stream
-      .filter(_.isLeft)
-      .map(_.left.get )
-      .flatMap(_.entities)
-
-    operationStream.print()
+      // Entity Stream
+      val entityStream : DataStream[Entity] = stream
+        .filter(_.isLeft)
+        .map(_.left.get )
+        .flatMap(_.entities)
 
     // TODO
 
