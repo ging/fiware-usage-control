@@ -22,7 +22,6 @@
                   <exclude>com.google.code.findbugs:jsr305</exclude>
                   <exclude>org.slf4j:*</exclude>
                   <exclude>log4j:*</exclude>
-                  <exclude>org.apache.flink</exclude>
                   <exclude>org.scala-lang</exclude>
                 </excludes>
               </artifactSet>
@@ -176,12 +175,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-kafka-0.11_2.11</artifactId>
-      <version>1.5.4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.7.7</version>
@@ -202,4 +195,3 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>
-
