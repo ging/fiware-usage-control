@@ -8,7 +8,7 @@ object CBRequests {
 
   /**
     * Method for delelting a Subscription in Orion context Broker
-    * @param contextHost Context Broker host in the form of IP:Port Ex(127.0.0.1:1026)
+    * @param contextBrokerHost Context Broker host in the form of IP:Port Ex(127.0.0.1:1026)
     * @param subscriptionId subscriptionId
     */
   def unsubscribe(contextBrokerHost: String, subscriptionId:String ) {
@@ -16,12 +16,12 @@ object CBRequests {
       val msg = Http("http://"+contextBrokerHost+"/subscriptions/"+subscriptionId).method("DELETE").asString.code
       println(msg)
     } catch {
-      case _: Exception => null
-      case _: Error => null
+      case _: Exception => println("There was an error")
+      case _: Error => println("There was an error")
     }
   }
 
-  def getSubscriptionId(contextBrokerHost: String, notificationURL:String ): String = {
+  def getSubscriptionId(contextBrokerHost: String, notificationURL: String ): String = {
     try {
       val msg = parse(Http("http://"+contextBrokerHost+"/subscriptions").asString.body)
       val id=for {
@@ -36,9 +36,10 @@ object CBRequests {
 
       return id(0)
     } catch {
-      case _: Exception => null
-      case _: Error => null
+      case _: Exception => println("There was an error")
+      case _: Error => println("There was an error")
     }
+    ""
   }
 
   /**
@@ -53,8 +54,8 @@ object CBRequests {
         .asString.code
       println(msg)
     } catch {
-      case _: Exception => null
-      case _: Error => null
+      case _: Exception => println("There was an error")
+      case _: Error => println("There was an error")
     }
   }
 }

@@ -38,7 +38,6 @@ object CEPMonitoring2{
       .map(_.left.get )
       .flatMap(_.entities)
 
-    operationStream.print()
 
     // First pattern: At least N events in T. 12h -14h
     val countPattern = Pattern.begin[Entity]("events" )
