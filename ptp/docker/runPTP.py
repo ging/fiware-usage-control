@@ -25,12 +25,13 @@ class S(BaseHTTPRequestHandler):
     def do_POST(self):
         # Doesn't do anything with posted data
         flink_endpoint = "138.4.7.94:8082"
+        prefix = str(randint(0, 9)+time.time())
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
         data = json.loads(post_data)
         modified_program = self.generate_cep_code(data)
-        self.write_program(modified_program) # <-- Write to disk instead of print
-        directory = self.execute_maven()
+        self.write_program(modified_program, prefix) # <-- Write to disk instead of print
+        directory = self.execute_maven(prefix)
         previous_job_id = data["previousJobId"]
         kill_job = self.kill_job(previous_job_id, flink_endpoint)
         jar_id = self.upload_jar(directory, flink_endpoint)
@@ -38,10 +39,7 @@ class S(BaseHTTPRequestHandler):
         self.delete_jar(jar_id, flink_endpoint)
         self._set_headers()
 
-    def execute_maven(self):
-        os.chdir('./')
-        prefix = str(randint(0, 9) + time.time())
-        shutil.copytree('./cep', './cep' + prefix)
+    def execute_maven(self, prefix):
         mypath = './cep' + prefix
         os.chdir(mypath)
         p = subprocess.Popen(["mvn", "package"], stdout = subprocess.PIPE)
@@ -75,7 +73,8 @@ class S(BaseHTTPRequestHandler):
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/" + jar_id + "/run?allowNonRestoredState=true"
         r = requests.post(url = FLINK_ENDPOINT) 
         pastebin_url = json.loads(r.text)
-        job_id = pastebin_url["id"]
+        print("About the running Job:%s"%pastebin_url) 
+        job_id = pastebin_url["jobid"]
         print("About the running Job:%s"%pastebin_url)    
         return job_id  
     
@@ -84,30 +83,37 @@ class S(BaseHTTPRequestHandler):
         r = requests.delete(url = FLINK_ENDPOINT)
     
     def generate_cep_code(self, data):
-        return cep.createProgram(json.loads(data))
+        return cep.createProgram(data)
 
-    def write_program(self, code):
-    	f = open("./cep/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "r+")
-    	print ("Name of the file: ", f.name)
-    	lines= f.readlines()
-    	for x in lines:
-        	part1 = part1 + x
-        	count = count + 1
-        	if '// TODO' in x:
-        	    break
-    	count = 0
-    	for x in lines:
-        	count = count + 1
-        	if count > 42:
-            		part2 = part2 + x             
-    	f.close()
-    	w = open("./cep/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "w+")
-    	w.write(part1)
-    	w.close()
-    	u = open("./cep/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "a")
-    	u.write(code)
-    	u.write(part2)
-    	u.close()	
+    def write_program(self, code, prefix):
+        os.chdir('./')
+        shutil.copytree('./cep', './cep' + prefix)
+        print("xxxxxx")
+        print(code)
+        f = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "r+")
+        print ("Name of the file: ", f.name)
+        part1 = ""
+        part2 = ""
+        count = 0
+        lines = f.readlines()
+        for x in lines:
+            part1 = part1 + x
+            if '// TODO' in x:
+                break
+        for x in lines:
+            count = count + 1
+            if count >= 42:
+                part2 = part2 + x             
+        f.close()
+        w = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "w+")
+        w.write(part1)
+        w.close()
+        u = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "a")
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<")
+        print(code)
+        u.write(code)
+        u.write(part2)
+        u.close()	
 
     def kill_job(self, job_id, flink_endpoint):
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jobs/" + job_id
