@@ -127,8 +127,6 @@ services:
     image: ging/dataset
     links:
       - mongo-ds
-    ports:
-      - "1026:1026"
     environment:
       - ORION_ENDPOINT=172.18.1.10:1026
       - MONGO_URI=mongodb://root:example@172.18.1.12:27017/
