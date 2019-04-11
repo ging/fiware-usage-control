@@ -1,3 +1,11 @@
+# Load access token
+while [ ! -f /etc/oauth/access_token ]
+do
+sleep 1
+done
+
+source ./etc/oauth/access_token
+
 # Start the flink task manager (slave)
 echo "Configuring Task Manager on this node"
 FLINK_NUM_TASK_SLOTS=${FLINK_NUM_TASK_SLOTS:-`grep -c ^processor /proc/cpuinfo`}
