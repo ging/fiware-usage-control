@@ -24,7 +24,7 @@ class S(BaseHTTPRequestHandler):
         
     def do_POST(self):
         # Doesn't do anything with posted data
-        flink_endpoint = "138.4.7.94:8082"
+        flink_endpoint = os.environ['FLINK_ENDPOINT']
         prefix = str(randint(0, 9)+time.time())
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
