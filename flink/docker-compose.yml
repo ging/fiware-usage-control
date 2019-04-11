@@ -1,33 +1,47 @@
 version: '2'
 services:
- flink-master:
-   image: bde2020/flink-master:1.7.2-hadoop2.8
-   hostname: flink-master
-   container_name: flink-master
+  flink-master:
+    image: ging/flink-master:1.7.2-hadoop2.8
+    hostname: flink-master
+    container_name: flink-master
 #   domainname: hadoop
 #   networks:
 #     - hadoop
-#  environment:
+    environment:
+      - IDM_URL=http://172.17.0.1:3000
+      - CLIENT_ID=7b444e6d-b2e8-4536-b7fc-549b993beda2
+      - CLIENT_SECRET=9a893545-dc0b-4ab5-9118-e46abf06bd3b
+      - CALLBACK_URL=http://localhost/login
+      - FLINK_PORT=8081
+      - OAUTH_CLIENT_PORT=80
 #      - "constraint:node==<yourmasternode>"
-   ports:
-     - "8080:8080"
-     - "8081:8081"
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+      - "80:80" # This is for the oauth client
+    volumes:
+      - access-token:/etc/oauth
 
- flink-worker:
-   image: bde2020/flink-worker:1.7.2-hadoop2.8
-   hostname: flink-worker
-   container_name: flink-worker
+  flink-worker:
+    image: ging/flink-worker:1.7.2-hadoop2.8
+    # hostname: flink-worker
+    # container_name: flink-worker
 #   domainname: hadoop
 #   networks:
 #     - hadoop
-   environment:
-     - FLINK_MASTER_PORT_6123_TCP_ADDR=flink-master
+    environment:
+      - FLINK_MASTER_PORT_6123_TCP_ADDR=flink-master
 #     - FLINK_NUM_TASK_SLOTS=2
 #    - "constraint:node==<yourworkernode>"
-   depends_on:
+    depends_on:
+      - flink-master
+    volumes_from:
       - flink-master
 
 #networks:
 #  default:
 #    external:
 #      name: hadoop
+
+volumes:
+  access-token:
