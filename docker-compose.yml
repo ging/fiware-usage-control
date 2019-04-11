@@ -59,6 +59,23 @@ services:
       networks:
         idm_network:
           ipv4_address: 172.18.1.8
+
+  ptp:
+    image: ging/ptp
+    hostname: ptp
+    container_name: ptp
+    expose:
+      - "8092"
+    ports:
+      - "8092:8092"
+    depends_on:
+      - cep-master
+    environment:
+      - FLINK_ENDPOINT=172.18.1.7:8081
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.14
+
   mongo:
     image: mongo:3.4
     command: --nojournal
@@ -121,6 +138,9 @@ services:
     depends_on:
       - mongo-ds
       - orion
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.13
 networks:
   idm_network:
     driver: bridge
