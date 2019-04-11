@@ -23,7 +23,7 @@ services:
       idm_network:
         ipv4_address: 172.18.1.6
     environment:
-      - DATABASE_HOST=172.18.1.5
+      - IDM_DB_HOST=mysql
 
   cep-master:
     image: flink
@@ -148,4 +148,4 @@ networks:
           gateway: 172.18.1.1
 volumes:
   vol-mysql:
-  vol-mongo:
+#  vol-mongo:
