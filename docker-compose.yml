@@ -122,6 +122,7 @@ services:
 
   dataset:
     image: ging/dataset
+    restart: always
     links:
       - mongo-ds
     environment:
