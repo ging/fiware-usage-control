@@ -2,8 +2,7 @@
 
 mongod --bind_ip 172.18.1.12 &
 sleep 4
-mongo use superMarket exit;
-mongoimport --db superMarket --collection tickets --drop --file DelightingCustomersBD.json
+mongoimport --host 172.18.1.12 --db superMarket --collection tickets --drop --file DelightingCustomersBD.json
 rm DelightingCustomersBD.json
 touch /var/log/mongodb/nn.log
 
