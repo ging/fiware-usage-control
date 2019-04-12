@@ -18,7 +18,7 @@ def generate (startDate, finishDate, frecuency, mongoURI, orionEndpoint):
     elif frecuency is None or "":
         frecuency=5
     elif mongoURI is None or "":
-        mongoURI="mongodb://root:example@localhost:27017/"
+        mongoURI="mongodb://localhost:27017/"
     sDateSplit = startDate.split("-")
     fDateSplit = finishDate.split("-")
     start = datetime(int(sDateSplit[0]), int(sDateSplit[1]), int(sDateSplit[2]))
