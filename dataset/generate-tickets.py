@@ -116,6 +116,7 @@ if __name__== "__main__":
 #parser.add_argument('orion', type=str, default='localhost:1026', help='host and port of the context broker!')
 #args=parser.parse_args()
 #os.environ['START_DATE']
+    time.sleep(130)
     start=os.environ['START_DATE']
     end=os.environ['END_DATE']
     frecuency=os.environ['FRECUENCY']
