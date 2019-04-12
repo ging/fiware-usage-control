@@ -35,7 +35,7 @@ services:
       - "8081:8081"
     command: jobmanager
     environment:
-      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - JOB_MANAGER_RPC_ADDRESS=cep-master
     networks:
       idm_network:
         ipv4_address: 172.18.1.7
@@ -55,7 +55,7 @@ services:
       links:
         - "cep-master:cep-master"
       environment:
-        - JOB_MANAGER_RPC_ADDRESS=cep-worker
+        - JOB_MANAGER_RPC_ADDRESS=cep-master
       networks:
         idm_network:
           ipv4_address: 172.18.1.8
@@ -110,15 +110,12 @@ services:
         ipv4_address: 172.18.1.11
 
   mongo-ds:
-    image: mongo
+    image: ging/mongo-dataset
     restart: always
     ports:
       - 27017:27017
     volumes:
       - vol-mongo:/data
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
     networks:
       idm_network:
         ipv4_address: 172.18.1.12
@@ -129,7 +126,7 @@ services:
       - mongo-ds
     environment:
       - ORION_ENDPOINT=172.18.1.10:1026
-      - MONGO_URI=mongodb://root:example@172.18.1.12:27017/
+      - MONGO_URI=mongodb://172.18.1.12:27017/
       - START_DATE=2016-01-14
       - END_DATE=2016-01-15
       - FRECUENCY=5
@@ -148,4 +145,4 @@ networks:
           gateway: 172.18.1.1
 volumes:
   vol-mysql:
-#  vol-mongo:
+  vol-mongo:
