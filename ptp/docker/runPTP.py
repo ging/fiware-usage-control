@@ -32,8 +32,9 @@ class S(BaseHTTPRequestHandler):
         modified_program = self.generate_cep_code(data)
         self.write_program(modified_program, prefix) # <-- Write to disk instead of print
         directory = self.execute_maven(prefix)
-        previous_job_id = data["previousJobId"]
-        kill_job = self.kill_job(previous_job_id, flink_endpoint)
+        if (data["previousJobId"]!=""):
+            previous_job_id = data["previousJobId"]
+            self.kill_job(previous_job_id, flink_endpoint)
         jar_id = self.upload_jar(directory, flink_endpoint)
         job_id = self.run_job(jar_id, flink_endpoint)
         self.delete_jar(jar_id, flink_endpoint)
@@ -66,7 +67,7 @@ class S(BaseHTTPRequestHandler):
         jar_id = args[len(args) - 1]
         print("About Uploaded Jar:%s"%pastebin_url)
         os.chdir('../..')
-        shutil.rmtree('./' + directory, ignore_errors=True)
+        #shutil.rmtree('./' + directory, ignore_errors=True)
         return jar_id
    
     def run_job(self, jar_id, flink_endpoint):

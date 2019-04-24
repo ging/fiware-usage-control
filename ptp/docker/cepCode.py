@@ -15,10 +15,10 @@ def createProgram(data):
       pattern = f"pattern{idx}"
       if (ruleType == "COUNT_POLICY"):
         stream = "entityStream"
-        ruleCode = createCountRule(pattern,rule["numMaxEvents"], rule["eventWindow"])
+        ruleCode = createCountRule(pattern,rule["params"]["numMaxEvents"], rule["params"]["eventWindow"])
       elif (ruleType == "AGGREGATION_POLICY"):
         stream = "operationStream"
-        ruleCode = createAggregationRule(pattern, rule["aggregateTime"])
+        ruleCode = createAggregationRule(pattern, rule["params"]["aggregateTime"])
       else:
         continue
       if ("from" in policy or "to" in policy):
