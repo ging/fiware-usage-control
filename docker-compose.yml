@@ -96,11 +96,16 @@ services:
     hostname: pep-ptp
     container_name: pep-ptp
     ports:
-      - "24224:24224"
+      - "24225:24225"
     environment:
-      - PEP_PROXY_PORT=24224
+      - PEP_PROXY_PORT=24225
       - PEP_PROXY_IDM_HOST=172.18.1.6
       - PEP_PROXY_IDM_PORT=3000
+      - PEP_PROXY_APP_HOST=172.18.1.8
+      - PEP_PROXY_APP_PORT=9200
+      - PEP_PROXY_APP_ID=a2b33c0c-c0d1-4807-af21-39613a2ff053
+      - PEP_PROXY_USERNAME=pep_proxy_6d21d0b9-eb0a-484b-b8a7-7719b806e695
+      - PEP_PASSWORD=pep_proxy_cac9bad6-203d-44cc-866f-549149465821
     depends_on:
       - fiware-idm
     networks:
