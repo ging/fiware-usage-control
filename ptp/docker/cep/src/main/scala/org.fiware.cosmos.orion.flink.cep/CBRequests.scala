@@ -23,27 +23,6 @@ object CBRequests {
     }
   }
 
-  def getSubscriptionId(contextBrokerHost: String, notificationURL: String ): String = {
-    try {
-      val msg = parse(Http("http://"+contextBrokerHost+"/subscriptions").asString.body)
-      val id=for {
-        JArray(objList) <- msg
-        JObject(obj) <- objList
-        JField("notification",JObject(notification))<-obj
-        JField("http",JObject(http))<-notification
-        JField("url",JString(url))<-http
-        if notificationURL.equals(url)
-        JField("id",JString(id))<-obj
-      }yield id
-
-      return id(0)
-    } catch {
-      case _: Exception => CBRequests.logger.error("There was an error")
-      case _: Error => CBRequests.logger.error("There was an error")
-    }
-    ""
-  }
-
   /**
     * Method for killing a Job running in a flink cluster
     * @param flinkHost Flink Job Manager host in the form of IP:Port Ex(127.0.0.1:1026)
