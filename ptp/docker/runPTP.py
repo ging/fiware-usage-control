@@ -4,7 +4,7 @@ from pathlib import Path
 from random import randint
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import socketserver,subprocess,os,requests,json,time,shutil
-import cep
+import cepCode
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -24,7 +24,7 @@ class S(BaseHTTPRequestHandler):
         
     def do_POST(self):
         # Doesn't do anything with posted data
-        flink_endpoint = "138.4.7.94:8082"
+        flink_endpoint = os.environ['FLINK_ENDPOINT']
         prefix = str(randint(0, 9)+time.time())
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
@@ -32,8 +32,9 @@ class S(BaseHTTPRequestHandler):
         modified_program = self.generate_cep_code(data)
         self.write_program(modified_program, prefix) # <-- Write to disk instead of print
         directory = self.execute_maven(prefix)
-        previous_job_id = data["previousJobId"]
-        kill_job = self.kill_job(previous_job_id, flink_endpoint)
+        if (data["previousJobId"]!=""):
+            previous_job_id = data["previousJobId"]
+            self.kill_job(previous_job_id, flink_endpoint)
         jar_id = self.upload_jar(directory, flink_endpoint)
         job_id = self.run_job(jar_id, flink_endpoint)
         self.delete_jar(jar_id, flink_endpoint)
@@ -66,7 +67,7 @@ class S(BaseHTTPRequestHandler):
         jar_id = args[len(args) - 1]
         print("About Uploaded Jar:%s"%pastebin_url)
         os.chdir('../..')
-        shutil.rmtree('./' + directory, ignore_errors=True)
+        #shutil.rmtree('./' + directory, ignore_errors=True)
         return jar_id
    
     def run_job(self, jar_id, flink_endpoint):
@@ -83,13 +84,11 @@ class S(BaseHTTPRequestHandler):
         r = requests.delete(url = FLINK_ENDPOINT)
     
     def generate_cep_code(self, data):
-        return cep.createProgram(data)
+        return cepCode.createProgram(data)
 
     def write_program(self, code, prefix):
         os.chdir('./')
         shutil.copytree('./cep', './cep' + prefix)
-        print("xxxxxx")
-        print(code)
         f = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "r+")
         print ("Name of the file: ", f.name)
         part1 = ""
@@ -109,8 +108,6 @@ class S(BaseHTTPRequestHandler):
         w.write(part1)
         w.close()
         u = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "a")
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<")
-        print(code)
         u.write(code)
         u.write(part2)
         u.close()	
