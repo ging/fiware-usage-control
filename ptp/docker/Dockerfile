@@ -68,6 +68,7 @@ RUN mkdir ./cep
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 COPY runPTP.py ./
+COPY cepCode.py ./
 COPY ./cep ./cep
 COPY requirements.txt ./
 COPY mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh

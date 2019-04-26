@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import sys
+import os
 import pymongo
 import requests 
 import json
@@ -7,23 +7,59 @@ import time
 import argparse
 from datetime import datetime
 
-def generate (startDate, finishDate, frecuency, orionEndpoint):
+def generate (startDate, finishDate, frecuency, mongoURI, orionEndpoint):
+    count=0
     if orionEndpoint is None:
-        orionEndpoint="138.4.22.138:1026"
-    elif startDate is None:
+        orionEndpoint="localhost:1026"
+    elif startDate is None or "":
         startDate="2016-01-14"
-    elif finishDate is None:
+    elif finishDate is None or "":
         finishDate="2016-01-15"
-    elif frecuency is None: 
+    elif frecuency is None or "":
         frecuency=5
+    elif mongoURI is None or "":
+        mongoURI="mongodb://localhost:27017/"
     sDateSplit = startDate.split("-")
     fDateSplit = finishDate.split("-")
     start = datetime(int(sDateSplit[0]), int(sDateSplit[1]), int(sDateSplit[2]))
     end = datetime(int(fDateSplit[0]), int(fDateSplit[1]), int(fDateSplit[2]))
-    myclient = pymongo.MongoClient("mongodb://root:example@138.4.7.94:27017/")
+    myclient = pymongo.MongoClient(mongoURI)
     mydb = myclient["superMarket"]
     mycol = mydb["tickets"]
-    # defining the api-endpoint  
+
+    if count==0:
+        ORION_ENDPOINT = "http://"+orionEndpoint+"/v2/entities/ticket"
+        headers = {'Content-Type': 'application/json','charset': 'utf-8'}
+        r = requests.get(url = ORION_ENDPOINT)
+        if r.status_code!=200 or r.status_code!=201 or r.status_code!=202:
+            ORION_ENDPOINT = "http://"+orionEndpoint+"/v2/entities/"
+            ngsiEvent={
+                'id':'ticket',
+                'type':'ticket',
+                '_id':{
+                    'type':'String',
+                    'value':0
+                },
+                'mall': {
+                    'type':'String',
+                    'value':0
+                },
+                'date':{
+                    'type':'date',
+                    'value':0
+                },
+                'client':{
+                    'type':'int',
+                    'value':0
+                },
+                'items':{
+                    'type':'object',
+                    'value':0
+                }
+            }
+            data = json.dumps(ngsiEvent)
+            r = requests.post(url = ORION_ENDPOINT, headers = headers, data = data)
+            # defining the api-endpoint
     ORION_ENDPOINT = "http://"+orionEndpoint+"/v2/entities/ticket/attrs"
     headers = {'Content-Type': 'application/json','charset': 'utf-8'}
     myquery =  { 'date': { '$gt': start, '$lt': end } } #{ "_id":14 }
@@ -70,12 +106,20 @@ def generate (startDate, finishDate, frecuency, orionEndpoint):
             print("The pastebin URL is:%s"%pastebin_url)
 
 if __name__== "__main__":
-    parser=argparse.ArgumentParser(
-    description='''Script for collecting tickets from mongoDB ''',
-    epilog="""All's well that ends well.""")
-parser.add_argument('start', type=str, default='2016-01-14', help='Start date for getting tickets!')
-parser.add_argument('end', type=str, default='2016-01-15', help='End date for getting tickets!')
-parser.add_argument('frecuency', type=int, default=5, help='Frecuency for post the tickets to the context broker!')
-parser.add_argument('--orion', type=str, default='138.4.22.138:1026', help='host and port of the context broker!')
-args=parser.parse_args()
-generate(args.start,args.end,args.frecuency,args.orion)
+#    parser=argparse.ArgumentParser(
+#    description='''Script for collecting tickets from mongoDB ''',
+#    epilog="""All's well that ends well.""")
+#parser.add_argument('start', type=str, default='2016-01-14', help='Start date for getting tickets!')
+#parser.add_argument('end', type=str, default='2016-01-15', help='End date for getting tickets!')
+#parser.add_argument('frecuency', type=int, default=5, help='Frecuency for post the tickets to the context broker!')
+#parser.add_argument('mongoURI', type=str, default="mongodb://root:example@localhost:27017/", help='mongo uri with format (mongodb://user:password@localhost:27017/) where the dataset is stored!')
+#parser.add_argument('orion', type=str, default='localhost:1026', help='host and port of the context broker!')
+#args=parser.parse_args()
+#os.environ['START_DATE']
+    time.sleep(130)
+    start=os.environ['START_DATE']
+    end=os.environ['END_DATE']
+    frecuency=os.environ['FRECUENCY']
+    mongoURI=os.environ['MONGO_URI']
+    orion=os.environ['ORION_ENDPOINT']
+    generate(start,end,int(frecuency),mongoURI,orion)

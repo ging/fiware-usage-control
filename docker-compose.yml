@@ -1,45 +1,85 @@
 version: '2'
 services:
-  flink-master:
-    image: ging/flink-master:1.6.1-hadoop2.8 
-    hostname: flink-master
-    container_name: flink-master
-    environment:
-      - FLUENT_HOST=fluent
-      - FLUENT_PORT=24224
-      - INIT_DAEMON_STEP=setup_flink
-    ports:
-      - "8080:8080"
-      - "8081:8081"
 
-  flink-worker:
-    image: ging/flink-worker:1.6.1-hadoop2.8
-    hostname: flink-worker
-    container_name: flink-worker
-    environment:
-      - FLINK_MASTER_PORT_6123_TCP_ADDR=flink-master
-      - FLUENT_HOST=fluent
-      - FLUENT_PORT=24224
+  mysql:
+    image: mysql/mysql-server:5.7.21
     ports:
-      - "9001:9001"
-    depends_on:
-      - "flink-master"
-  
-  fluent:
-    image: fluent/fluent-bit
-    hostname: fluent
-    container_name: fluent
+      - "3306:3306"
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.5
     volumes:
-      - ./fluent/flink_to_cep.conf:/fluent-bit/etc/flink_to_cep.conf
+      - vol-mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=idm
+      - MYSQL_ROOT_HOST=172.18.1.6
+
+  fiware-idm:
+    image: fiware/idm
     ports:
-      - "24224:24224"
-      - "24224:24224/udp"
-    command:
-      -/fluent-bit/bin/fluent-bit -c /fluent-bit/etc/flink_to_cep.conf     
-  
+      - "3000:3000"
+      - "443:443"
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.6
+    environment:
+      - IDM_DB_HOST=mysql
+
+  cep-master:
+    image: ging/flink-master:1.6.1-hadoop2.8
+    hostname: cep-master
+    container_name: cep-master
+    expose:
+      - "6123"
+    ports:
+      - "8081:8081"
+    environment:
+      - FLINK_PORT=8081
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.7
+
+  cep-worker:
+    image: ging/flink-worker:1.6.1-hadoop2.8
+    hostname: cep-worker
+    container_name: cep-worker
+    expose:
+      - "6121"
+      - "6122"
+    ports:
+      - "9200:9200"
+    depends_on:
+      - cep-master
+    links:
+      - "cep-master:cep-master"
+    environment:
+      - FLINK_MASTER_PORT_6123_TCP_ADDR=cep-master
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.8
+
+  ptp:
+    image: ging/ptp
+    hostname: ptp
+    container_name: ptp
+    expose:
+      - "8092"
+    ports:
+      - "8092:8092"
+    depends_on:
+      - cep-master
+    environment:
+      - FLINK_ENDPOINT=172.18.1.7:8081
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.14
+
   mongo:
     image: mongo:3.4
     command: --nojournal
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.9
   orion:
     image: fiware/orion
     links:
@@ -47,3 +87,66 @@ services:
     ports:
       - "1026:1026"
     command: -dbhost mongo
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.10
+
+  pep-ptp:
+    image: ging/pep-ptp
+    hostname: pep-ptp
+    container_name: pep-ptp
+    ports:
+      - "24225:24225"
+    environment:
+      - PEP_PROXY_PORT=24225
+      - PEP_PROXY_IDM_HOST=172.18.1.6
+      - PEP_PROXY_IDM_PORT=3000
+      - PEP_PROXY_APP_HOST=172.18.1.8
+      - PEP_PROXY_APP_PORT=9200
+      - PEP_PROXY_APP_ID=a2b33c0c-c0d1-4807-af21-39613a2ff053
+      - PEP_PROXY_USERNAME=pep_proxy_6d21d0b9-eb0a-484b-b8a7-7719b806e695
+      - PEP_PASSWORD=pep_proxy_cac9bad6-203d-44cc-866f-549149465821
+    depends_on:
+      - fiware-idm
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.11
+
+  mongo-ds:
+    image: ging/mongo-dataset
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - vol-mongo:/data
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.12
+
+  dataset:
+    image: ging/dataset
+    restart: always
+    links:
+      - mongo-ds
+    environment:
+      - ORION_ENDPOINT=172.18.1.10:1026
+      - MONGO_URI=mongodb://172.18.1.12:27017/
+      - START_DATE=2016-01-14
+      - END_DATE=2016-01-15
+      - FRECUENCY=5
+    depends_on:
+      - mongo-ds
+      - orion
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.13
+networks:
+  idm_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.1.0/24
+          gateway: 172.18.1.1
+volumes:
+  vol-mysql:
+  vol-mongo:
