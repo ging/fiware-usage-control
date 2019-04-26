@@ -110,7 +110,10 @@ class S(BaseHTTPRequestHandler):
         u = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "a")
         u.write(code)
         u.write(part2)
-        u.close()	
+        print(part1)
+        print(code)
+        print(part2)
+        u.close()
 
     def kill_job(self, job_id, flink_endpoint):
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jobs/" + job_id
