@@ -34,7 +34,13 @@ object CEPParser {
       val msg = log.message
 
       msg match {
-        case ngsiPattern(ng) => Left(parse(ng).extract[NgsiEvent])
+        case ngsiPattern(ng) =>  {
+          val event = parse(ng).extract[NgsiEvent]
+          if (!JobId.subscriptionIds.contains(event.subscriptionId) ) {
+            JobId.subscriptionIds = JobId.subscriptionIds :+ event.subscriptionId
+          }
+          Left(event)
+        }
         case executionGraphPattern(eg) => Right(new ExecutionGraph(eg))
         case endExecutionGraphPattern(eg) => Right(new ExecutionGraph("END"))
         case jobIdPattern(id) => {JobId.jobId = id; null}
