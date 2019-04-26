@@ -24,7 +24,7 @@ import io.netty.handler.codec.http.HttpVersion.HTTP_1_1
 import io.netty.handler.codec.http._
 import io.netty.util.{AsciiString}
 import org.apache.flink.streaming.api.functions.source.SourceFunction.SourceContext
-import org.fiware.cosmos.orion.flink.cep.orion.fiware.cosmos.orion.flink.cep.connector.{CEPParser}
+import org.fiware.cosmos.orion.flink.cep.connector.{CEPParser}
 import org.json4s.DefaultFormats
 import org.slf4j.LoggerFactory
 

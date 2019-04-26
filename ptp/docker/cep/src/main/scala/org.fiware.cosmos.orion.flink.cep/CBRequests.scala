@@ -2,9 +2,11 @@ package org.fiware.cosmos.orion.flink.cep
 
 import org.json4s.JsonAST.{JArray, JField, JObject, JString}
 import org.json4s.jackson.JsonMethods.parse
-import scalaj.http.Http
+import org.slf4j.LoggerFactory
 
+import scalaj.http.Http
 object CBRequests {
+  private lazy val logger = LoggerFactory.getLogger(getClass)
 
   /**
     * Method for delelting a Subscription in Orion context Broker
@@ -14,10 +16,10 @@ object CBRequests {
   def unsubscribe(contextBrokerHost: String, subscriptionId:String ) {
     try {
       val msg = Http("http://"+contextBrokerHost+"/v2/subscriptions/"+subscriptionId).method("DELETE").asString.code
-      println(msg)
+      CBRequests.logger.info(msg.toString)
     } catch {
-      case _: Exception => println("There was an error")
-      case _: Error => println("There was an error")
+      case _: Exception => CBRequests.logger.error("There was an error")
+      case _: Error => CBRequests.logger.error("There was an error")
     }
   }
 
@@ -36,8 +38,8 @@ object CBRequests {
 
       return id(0)
     } catch {
-      case _: Exception => println("There was an error")
-      case _: Error => println("There was an error")
+      case _: Exception => CBRequests.logger.error("There was an error")
+      case _: Error => CBRequests.logger.error("There was an error")
     }
     ""
   }
@@ -52,10 +54,10 @@ object CBRequests {
       val msg = Http("http://"+flinkHost+"/jobs/"+jobId)
         .method("PATCH")
         .asString.code
-      println(msg)
+      CBRequests.logger.info(msg.toString)
     } catch {
-      case _: Exception => println("There was an error")
-      case _: Error => println("There was an error")
+      case _: Exception => logger.error("There was an error")
+      case _: Error => logger.error("There was an error")
     }
   }
 }
