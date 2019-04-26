@@ -40,7 +40,7 @@
               </filters>
               <transformers>
                 <transformer>
-                  <mainClass>flinknetty.StreamingJob</mainClass>
+                  <mainClass>org.fiware.cosmos.orion.flink.cep.examples.example1.AveragePrice</mainClass>
                 </transformer>
               </transformers>
             </configuration>

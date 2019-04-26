@@ -13,7 +13,7 @@ object CBRequests {
     */
   def unsubscribe(contextBrokerHost: String, subscriptionId:String ) {
     try {
-      val msg = Http("http://"+contextBrokerHost+"/subscriptions/"+subscriptionId).method("DELETE").asString.code
+      val msg = Http("http://"+contextBrokerHost+"/v2/subscriptions/"+subscriptionId).method("DELETE").asString.code
       println(msg)
     } catch {
       case _: Exception => println("There was an error")

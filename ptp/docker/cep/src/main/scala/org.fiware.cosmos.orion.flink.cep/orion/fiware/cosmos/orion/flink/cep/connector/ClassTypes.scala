@@ -6,7 +6,7 @@ package org.fiware.cosmos.orion.flink.cep.connector
   * @param fiwareServicePath Fiware service path header
   * @param entities List of entities
   */
-case class NgsiEvent(creationTime: Long, fiwareService: String ,fiwareServicePath: String, entities: Seq[Entity] ) extends Serializable
+case class NgsiEvent(creationTime: Long, fiwareService: String ,fiwareServicePath: String, entities: Seq[Entity], subscriptionId: String ) extends Serializable
 
 /**
   * Entity

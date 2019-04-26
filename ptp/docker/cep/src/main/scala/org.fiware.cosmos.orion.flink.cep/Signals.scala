@@ -15,15 +15,26 @@ object Signals {
           println(s"El procesado de los datos debe hacerse de forma agregada y utilizando una ventana mayor o igual que ${Policies.aggregateTime}")
       }
     }
-    performPunishment(punishment)
+    performPunishment(punishment, content)
     null
   }
 
-  private def performPunishment(punishment: Punishment.Value): Unit = {
+  private def performPunishment(punishment: Punishment.Value, content: Map[String,Iterable[Any]]): Unit = {
     punishment match {
-      case Punishment.UNSUBSCRIBE => println("Unsubscribe")//CBRequests.unsubscribe("138.4.22.138:1026","http://138.4.7.94:9001/notify")
-      case Punishment.KILL_JOB => println("Kill Job: " + JobId.jobId) //killJob()
-      case Punishment.MONETIZE => println("$$$$$$$$$$")
+      case Punishment.UNSUBSCRIBE => {
+        println(content)
+        JobId.subscriptionIds.map(sId=>{
+          CBRequests.unsubscribe("172.18.1.10:1026", sId)
+        })
+        println("Unsubscribe")
+      }
+      case Punishment.KILL_JOB => {
+        CBRequests.killJob("138.4.7.94", JobId.jobId )
+        println("Kill Job: " + JobId.jobId)
+      }
+      case Punishment.MONETIZE => {
+        println("$$$$$$$$$$")
+      }
     }
   }
 }

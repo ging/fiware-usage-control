@@ -22,7 +22,7 @@ object CEPMonitoring2{
 
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
-    // Create Orion Source. Receive notifications on port 9001
+    // Create Orion Source. Receive notifications on port 9200
     val stream : DataStream[Either[NgsiEvent,ExecutionGraph]] = env.addSource(new CEPSource(9200))
 
     // Operation Stream
