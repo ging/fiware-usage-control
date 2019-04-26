@@ -18,9 +18,9 @@ object Punishment extends Enumeration {
 
 
 object Policies {
-  final val numMaxEvents = 2
-  final val facturationTime = 15
-  final val aggregateTime = 10000
+  final val numMaxEvents = 2 //nº events
+  final val facturationTime = 15 //s
+  final val aggregateTime = 10000 //ms
 
   def executionGraphChecker(event: ExecutionGraph, flag: String, aggregationTime: Long = 0) : Boolean = {
     val sourcePattern : Regex = "Source(.*)".r

@@ -1,4 +1,4 @@
-package org.fiware.cosmos.orion.flink.cep.orion.fiware.cosmos.orion.flink.cep.connector
+package org.fiware.cosmos.orion.flink.cep.connector
 
 import io.netty.buffer.ByteBufUtil
 import io.netty.handler.codec.http.FullHttpRequest
