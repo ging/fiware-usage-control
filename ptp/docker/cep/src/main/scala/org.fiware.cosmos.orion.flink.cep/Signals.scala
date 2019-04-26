@@ -31,7 +31,7 @@ object Signals {
         logger.warn("Unsubscribe")
       }
       case Punishment.KILL_JOB => {
-        CBRequests.killJob("138.4.7.94", JobId.jobId )
+        CBRequests.killJob("138.4.7.94:8081", JobId.jobId )
         logger.warn("Kill Job: " + JobId.jobId)
       }
       case Punishment.MONETIZE => {
