@@ -15,7 +15,7 @@ object CEPParser {
   val ngsiPattern : Regex = ".*?org.fiware.cosmos.orion.flink.connector.OrionHttpHandler *-* *(.*)".r
   val executionGraphPattern : Regex = ".*?org.apache.flink.runtime.executiongraph.ExecutionGraph *-* *(.*) \\(\\d+/\\d+\\).*".r
   val endExecutionGraphPattern : Regex = ".*?org.apache.flink.runtime.jobmaster.JobMaster *-* *(.*)".r
-  val jobIdPattern : Regex = ".*?org.apache.flink.runtime.jobmaster.JobManagerRunner *-* *JobManager runner for job Socket Window NgsiEvent \\((\\w*)\\) .*".r
+  val jobIdPattern : Regex = ".*?org.apache.flink.runtime.jobmaster.JobManagerRunner *-* *JobManager runner for job .* \\\\((\\\\w*)\\\\) was .*".r
 
   final def parseGenericMessage(req : FullHttpRequest) : Log = {
     val headerEntries = req.headers().entries()
