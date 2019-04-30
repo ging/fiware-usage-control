@@ -43,7 +43,7 @@ class S(BaseHTTPRequestHandler):
     def execute_maven(self, prefix):
         mypath = './cep' + prefix
         os.chdir(mypath)
-        p = subprocess.Popen(["mvn", "package"], stdout = subprocess.PIPE)
+        p = subprocess.Popen(["mvn clean package"],shell=True, stdout = subprocess.PIPE)
         output, err = p.communicate()
         os.chdir("..")
         print (output)
@@ -67,7 +67,7 @@ class S(BaseHTTPRequestHandler):
         jar_id = args[len(args) - 1]
         print("About Uploaded Jar:%s"%pastebin_url)
         os.chdir('../..')
-        #shutil.rmtree('./' + directory, ignore_errors=True)
+        shutil.rmtree('./' + directory, ignore_errors=True)
         return jar_id
    
     def run_job(self, jar_id, flink_endpoint):

@@ -26,7 +26,7 @@ services:
       - IDM_DB_HOST=mysql
 
   cep-master:
-    image: ging/flink-master:1.6.1-hadoop2.8
+    image: bde2020/flink-master:1.7.2-hadoop2.8
     hostname: cep-master
     container_name: cep-master
     expose:
@@ -35,12 +35,13 @@ services:
       - "8081:8081"
     environment:
       - FLINK_PORT=8081
+      - INIT_DAEMON_STEP=setup_flink
     networks:
       idm_network:
         ipv4_address: 172.18.1.7
 
   cep-worker:
-    image: ging/flink-worker:1.6.1-hadoop2.8
+    image: bde2020/flink-worker:1.7.2-hadoop2.8
     hostname: cep-worker
     container_name: cep-worker
     expose:
