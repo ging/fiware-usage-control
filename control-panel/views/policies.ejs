@@ -1,0 +1,35 @@
+<%- include('./_sidebar', {section: "policies"}) %>
+
+<div class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content main-content">
+  <h1 class="h2 dashboard-title">Active policies</h1>
+  <div class="btn-toolbar mb-2 mb-md-0 dashboard-button-toolbar">
+    <div class="btn-group mr-2">
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr class="animated flipInX">
+        <th scope="col">User</th>
+        <th scope="col">App</th>
+        <th scope="col">Type</th>
+        <th scope="col">Params</th>
+        <th scope="col">Punishment</th>
+        <th scope="col">Hour range</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let p in policies) { 
+        var policy = policies[p];
+      %>
+      <tr class="animated flipInX" style="animation-delay: <%=p*100%>ms;">
+        <td><%=policy.userId %></td>
+        <td><%=policy.appId %></td>
+        <th scope="row"><%=policy.type %></th>
+        <td><%=JSON.stringify(policy.params) %></td>
+        <th scope="row"><%=policy.punishment %></th>
+        <td><%= (policy.except ? "Except ": "") + ((policy.from || policy.to) ? ((policy.from || "00:00") + "-" + (policy.to || "00:00")) : "Always") %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>

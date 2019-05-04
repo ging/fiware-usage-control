@@ -1,0 +1,77 @@
+<%- include('./_sidebar', {section: "index"}) %>
+
+<div class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content main-content">
+	<h1 class="h2" style="font-weight: 400;" >Welcome to the FIWARE Usage Control Panel</h1>
+	<br/>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="alert alert-primary" style="display:block;width:100%;background-color:#7FC4D133;">
+				In this portal you will be able to see how customers are making use of your data and if they have complied with the policies with which you have both agreed. You can check active policies, rules that have not been complied with and punishments executed.
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xl-3 col-md-6 mb-4">
+			  <div class="card border-left-primary shadow h-100 py-2 animated zoomIn" style="animation-delay: 100ms;">
+			    <div class="card-body">
+			      <div class="row no-gutters align-items-center">
+			        <div class="col mr-2">
+			          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Active apps</div>
+			          <div class="h5 mb-0 font-weight-bold text-gray-800"><%=info.activeApps%></div>
+			        </div>
+			        <div class="col-auto">
+			          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-package"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="col-xl-3 col-md-6 mb-4">
+			  <div class="card border-left-success shadow h-100 py-2 animated zoomIn" style="animation-delay: 200ms;">
+			    <div class="card-body">
+			      <div class="row no-gutters align-items-center">
+			        <div class="col mr-2">
+			          <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active users</div>
+			          <div class="h5 mb-0 font-weight-bold text-gray-800"><%=info.activeUsers%></div>
+			        </div>
+			        <div class="col-auto">
+			          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="col-xl-3 col-md-6 mb-4">
+			  <div class="card border-left-info shadow h-100 py-2 animated zoomIn" style="animation-delay: 300ms;">
+			    <div class="card-body">
+			      <div class="row no-gutters align-items-center">
+			        <div class="col mr-2">
+			          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Run Jobs</div>
+	 				<div class="h5 mb-0 font-weight-bold text-gray-800"><%=info.activeJobs%></div>
+			        </div>
+			        <div class="col-auto">
+			          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="col-xl-3 col-md-6 mb-4">
+			  <div class="card border-left-warning shadow h-100 py-2 animated zoomIn" style="animation-delay: 400ms;">
+			    <div class="card-body">
+			      <div class="row no-gutters align-items-center">
+			        <div class="col mr-2">
+			          <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Active Policies</div>
+			          <div class="h5 mb-0 font-weight-bold text-gray-800"><%=info.activePolicies%></div>
+			        </div>
+			        <div class="col-auto">
+			          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather dollar-sign"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+		<%- include("_charts") %>
+	</div>
+</div>

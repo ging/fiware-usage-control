@@ -1,0 +1,44 @@
+<%- include('./_sidebar', {section: "events"}) %>
+<% 
+  const zeroPadding = (d) => { if (d < 10) { return `0${d}`;} return d;};
+  const getFullDate = (d) => { d.setMinutes(d.getMinutes() + d.getTimezoneOffset()); return `${zeroPadding(d.getDate())}-${zeroPadding(d.getMonth() + 1)}-${d.getFullYear()} ${zeroPadding(d.getHours())}:${zeroPadding(d.getMinutes())}`; };
+%>
+<div class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content main-content">
+  <h1 class="h2 dashboard-title" >Events</h1>
+  <div class="btn-toolbar mb-2 mb-md-0 dashboard-button-toolbar">
+    <div class="btn-group mr-2">
+      <button type="button" class="btn btn-sm btn-outline-primary">Share</button>
+      <a href="events?csv=1" download ><button type="button" class="btn btn-sm btn-outline-primary export">Export</button></a>
+    </div>
+    <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      This week
+    </button>
+  </div>
+  <table class="table table-striped" id="eventsTable">
+    <thead>
+      <tr class="animated flipInX">
+        <th scope="col">User</th>
+        <th scope="col">Job</th>
+        <th scope="col">Event Type</th>
+        <th scope="col">Punishment</th>
+        <th scope="col">Content</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let ev in events) { 
+        var event = events[ev]; %>
+        <tr class="animated flipInX" style="animation-delay: <%=ev*100%>ms;">
+          <td><%=event.userId %></td>
+          <td><%=event.jobId %></td>
+          <th scope="row"><%=event.type %></td>
+          <td><%=event.punishment %></td>
+          <td><%=event.msg %></td>
+          <td><%=getFullDate(event.createdAt)%></td>
+        </tr>
+      <%}%>
+    </tbody>
+  </table>
+</div>
+<script>window.events=true;</script>

@@ -1,0 +1,29 @@
+html .main .main-content, body .main .main-content {
+  min-height: calc(100vh - 60px); }
+  html .main .main-content .dashboard-title, body .main .main-content .dashboard-title {
+    float: left; }
+  html .main .main-content .dashboard-button-toolbar, body .main .main-content .dashboard-button-toolbar {
+    float: right; }
+  html .main .main-content .export, body .main .main-content .export {
+    height: 100%;
+    margin-left: 4px; }
+  html .main .main-content .py-2, body .main .main-content .py-2 {
+    margin: 5px;
+    border: none; }
+  html .main .main-content .mb-4, body .main .main-content .mb-4 {
+    padding: 0px; }
+  html .main .main-content .chart-wrapper, body .main .main-content .chart-wrapper {
+    padding: 0px; }
+    html .main .main-content .chart-wrapper .chart, body .main .main-content .chart-wrapper .chart {
+      margin: 5px;
+      padding: 15px; }
+
+html .sidebar, body .sidebar {
+  padding-top: 20px;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1); }
+  html .sidebar .sidebar-link.active, body .sidebar .sidebar-link.active {
+    font-weight: bold; }
+  html .sidebar .sidebar-link svg, body .sidebar .sidebar-link svg {
+    padding-right: 7px; }
+
+/*# sourceMappingURL=style.css.map */

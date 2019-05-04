@@ -1,0 +1,111 @@
+<div class="row">
+            <div class="col-xs-12 col-lg-4 chart-wrapper">
+                <div class="chart shadow animated zoomIn" style="animation-delay: 100ms;">
+                    <span class="text-xs font-weight-bold  text-uppercase mb-1">Policy rules</span><br/><br/>
+                    <canvas id="ruleChart"></canvas>
+                </div>
+            </div>
+            <div class="col-xs-12 col-lg-4 chart-wrapper">
+                <div class="chart shadow animated zoomIn" style="animation-delay: 200ms;">
+                    <span class="text-xs font-weight-bold  text-uppercase mb-1">Punishments</span><br/><br/>
+                    <canvas id="punishmentChart"></canvas>
+                </div>
+            </div>
+            <div class="col-xs-12 col-lg-4 chart-wrapper">
+                <div class="chart shadow animated zoomIn" style="animation-delay: 300ms;">
+                    <span class="text-xs font-weight-bold  text-uppercase mb-1">History</span><br/><br/>
+                    <canvas id="historyChart"></canvas>
+                </div>
+            </div>
+        </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+$(function(){
+	Chart.defaults.global.legend.display = false;	
+	Chart.defaults.global.animation.duration = 400;	
+const first = getComputedStyle(document.documentElement).getPropertyValue('--green');
+const second = getComputedStyle(document.documentElement).getPropertyValue('--teal');
+const third = getComputedStyle(document.documentElement).getPropertyValue('--pink');
+const fourth = getComputedStyle(document.documentElement).getPropertyValue('--indigo');
+const fifth = getComputedStyle(document.documentElement).getPropertyValue('--purple');
+const sixth = getComputedStyle(document.documentElement).getPropertyValue('--cyan');
+
+var ctxRule = document.getElementById('ruleChart').getContext('2d');
+var chartRule = new Chart(ctxRule, {
+    type: 'bar',
+    data: {
+        labels: ['AGGREGATION_POLICY', 'COUNT_POLICY'],
+        datasets: [{
+            label: 'Rules',
+            backgroundColor: [first, second],
+            hoverBackgroundColor: [first+88, second+88],
+            borderColor: [first, second],
+            data: [
+	            <%=data.types['AGGREGATION_POLICY'] || 0 %>, 
+	            <%=data.types['COUNT_POLICY'] || 0 %>
+            ],
+        }]
+    },
+    options: {
+		scales: {yAxes: [{ticks: {beginAtZero: true}}]}
+    }
+});
+
+var ctxPunishment = document.getElementById('punishmentChart').getContext('2d');
+var chartPunishment = new Chart(ctxPunishment, {
+    type: 'bar',
+    data: {
+        labels: ['UNSUBSCRIBE', 'KILL_JOB', 'MONETIZE'],
+        datasets: [{
+            label: 'Punishments',
+            backgroundColor: [third, fourth, fifth],
+            hoverBackgroundColor: [third+88, fourth+88, fifth+88],
+            borderColor: [third, fourth, fifth],
+            data: [<%=data.punishments['UNSUBSCRIBE'] || 0 %>,
+             <%=data.punishments['KILL_JOB'] || 0%>,
+             <%=data.punishments['MONETIZE'] || 0%>
+             ]
+        }]
+    },
+    options: {
+		scales: {yAxes: [{ticks: {beginAtZero: true}}]}
+    }
+});
+var oneWeek = new Date()
+oneWeek.setDate(oneWeek.getDate() - 7);
+
+var ctxHistory = document.getElementById('historyChart').getContext('2d');
+var chartHistory = new Chart(ctxHistory, {
+    type: 'line',
+    data: {
+        labels:<%-JSON.stringify(data.history.dates.map(d=>{
+			let date = d.split("-");
+			var t = new Date(parseInt(date[2]), parseInt(date[1]-1), parseInt(date[0]))
+			return t
+        }))%>,
+        datasets: [{
+            label: 'Events',
+            backgroundColor: sixth+44,
+            borderColor: sixth,
+            hoverBackgroundColor: sixth,
+            data: <%-JSON.stringify(data.history.count)%>
+            
+        }]
+    },
+    options: {
+		scales: {
+			yAxes: [{ticks: {beginAtZero: true}}],
+			xAxes: [{
+	                type: 'time',
+	                time: {
+	                    unit: 'day',
+	                    min: oneWeek
+	                }
+	            }]
+		}
+    }
+});
+
+});
+</script>
