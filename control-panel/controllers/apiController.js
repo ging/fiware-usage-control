@@ -11,7 +11,7 @@ exports.report = (req, res, next) => {
 	// res.end();
 	// global.io.emit("report", event);
 	/*******************************/
-	  
+	console.log(event)
 	event.save({"fields": ["type", "userId", "jobId", "msg", "punishment"]}).
 	    then((ev) => {
 	    	res.end();
