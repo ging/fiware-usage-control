@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "nodemon bin/www -e sass,js --exec \"node\"",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "migrate_local": "sequelize db:migrate --url sqlite://$(pwd)/db.sqlite",
+    "seed_local": "sequelize db:seed:all --url sqlite://$(pwd)/db.sqlite"
+
   },
   "dependencies": {
     "connect-session-sequelize": "^6.0.0",

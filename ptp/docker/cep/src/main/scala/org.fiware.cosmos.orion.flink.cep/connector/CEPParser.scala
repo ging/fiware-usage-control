@@ -16,7 +16,6 @@ object CEPParser {
   val executionGraphPattern : Regex = ".*?org.apache.flink.runtime.executiongraph.ExecutionGraph *-* *(.*) \\(\\d+/\\d+\\).*".r
   val endExecutionGraphPattern : Regex = ".*?org.apache.flink.runtime.jobmaster.JobMaster *-* *(.*)".r
   val jobIdPattern : Regex = ".*?org.apache.flink.runtime.jobmaster.JobManagerRunner *-* *JobManager runner for job .* \\((\\w*)\\) was .*".r
-
   /**
     * Converts HTTP message into Log
     * @param req FullHttpRequest object

@@ -8,11 +8,11 @@ exports.report = (req, res, next) => {
 
 	const event = models.event.build({ type, userId, jobId, msg, punishment	}); 
 	/************* DEV *************/ 
-	res.end();
-	global.io.emit("report", event);
+	// res.end();
+	// global.io.emit("report", event);
 	/*******************************/
 	  
-	/*event.save({"fields": ["type", "userId", "jobId", "msg", "punishment"]}).
+	event.save({"fields": ["type", "userId", "jobId", "msg", "punishment"]}).
 	    then((ev) => {
 	    	res.end();
 	    	global.io.emit("report", ev);
@@ -21,6 +21,6 @@ exports.report = (req, res, next) => {
 	    	console.error(e);
 	    	res.status(500);
 	    	res.send(e);
-	    })*/
+	    })
 	
 }
