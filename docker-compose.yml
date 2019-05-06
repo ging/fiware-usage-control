@@ -26,7 +26,7 @@ services:
       - IDM_DB_HOST=mysql
 
   cep-master:
-    image: bde2020/flink-master:1.7.2-hadoop2.8
+    image: ging/flink-cep-master:1.7.2-hadoop2.8
     hostname: cep-master
     container_name: cep-master
     expose:
@@ -41,7 +41,7 @@ services:
         ipv4_address: 172.18.1.7
 
   cep-worker:
-    image: bde2020/flink-worker:1.7.2-hadoop2.8
+    image: ging/flink-cep-worker:1.7.2-hadoop2.8
     hostname: cep-worker
     container_name: cep-worker
     expose:
