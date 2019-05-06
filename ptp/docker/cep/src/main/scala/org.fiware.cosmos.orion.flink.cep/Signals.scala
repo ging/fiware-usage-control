@@ -64,7 +64,7 @@ object Signals {
   private def reportPunishment(rule: Policy.Value, punishment: Punishment.Value, msg: String  ): Unit = {
     val body = write(ControlObject(rule, "11321", JobId.jobId, msg, punishment ))
     try {
-      val req = Http("http://172.18.1.15:3001")
+      val req = Http("http://172.18.1.15:3001/report")
         .method("POST")
         .postData(body)
         .header("content-type", "application/json")
