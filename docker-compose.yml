@@ -59,6 +59,20 @@ services:
       idm_network:
         ipv4_address: 172.18.1.8
 
+  control-panel:
+    image: ging/control-panel
+    hostname: control-panel
+    container_name: control-panel
+    expose:
+      - "3001"
+    ports:
+      - "3001:3001"
+    depends_on:
+      - cep-master
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.15
+
   ptp:
     image: ging/ptp
     hostname: ptp
