@@ -62,7 +62,7 @@ object Signals {
   }
 
   private def reportPunishment(rule: Policy.Value, punishment: Punishment.Value, msg: String  ): Unit = {
-    val body = write(ControlObject(rule, "11321", JobId.jobId, msg, punishment ))
+    val body = write(ControlObject(rule.toString, "11321", JobId.jobId, msg, punishment.toString ))
     try {
       val req = Http("http://172.18.1.15:3001/report")
         .method("POST")
@@ -76,5 +76,5 @@ object Signals {
     }
   }
 
-  case class ControlObject (`type`: Policy.Value, userId: String, jobId: String, msg: String, punishment: Punishment.Value)
+  case class ControlObject (`type`: String, userId: String, jobId: String, msg: String, punishment: String)
 }
