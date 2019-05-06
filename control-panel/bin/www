@@ -88,6 +88,7 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
+/*
 setInterval(()=>{
   needle.post('http://localhost:'+ port + "/report", 
     {
@@ -101,4 +102,5 @@ setInterval(()=>{
     });
   },
   1000);
+*/
 

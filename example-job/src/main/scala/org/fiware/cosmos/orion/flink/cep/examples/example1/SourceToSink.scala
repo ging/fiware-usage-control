@@ -16,6 +16,7 @@ object SourceToSink {
   final val METHOD = HTTPMethod.POST
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
+    val env = StreamExecutionEnvironment.getExecutionEnvironment
     // Create Orion Source. Receive notifications on port 9001
     val eventStream = env.addSource(new OrionSource(9001))
 
