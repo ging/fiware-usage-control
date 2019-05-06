@@ -2,6 +2,7 @@ package org.fiware.cosmos.orion.flink.cep
 
 import org.fiware.cosmos.orion.flink.cep.CBRequests.logger
 import org.fiware.cosmos.orion.flink.cep.connector.JobId
+import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 import org.slf4j.LoggerFactory
 
@@ -9,6 +10,8 @@ import scala.collection._
 import scalaj.http.Http
 
 object Signals {
+  implicit val formats = DefaultFormats
+
   private lazy val logger = LoggerFactory.getLogger(getClass)
 
   /**
