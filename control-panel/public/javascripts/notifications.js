@@ -11,7 +11,7 @@ $(function(){
 				  <th scope="row">${event.type}</td>
 				  <td>${event.punishment}</td>
 				  <td>${event.msg}</td>
-				  <td>${getFullDate(event.createdAt || new Date())}</td>
+				  <td>${getFullDate(event.createdAt ? new Date(event.createdAt) : new Date())}</td>
 				</tr>
 			`)
 
