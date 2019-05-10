@@ -26,6 +26,7 @@ services:
       - IDM_DB_HOST=mysql
       - IDM_PTP_HOST=172.18.1.14
       - IDM_PTP_PORT=8092
+      - IDM_DATA_USAGE_ENABLE=true
 
   cep-master:
     image: ging/flink-cep-master:1.7.2-hadoop2.8
