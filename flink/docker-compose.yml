@@ -31,6 +31,7 @@ services:
 #    - "constraint:node==<yourworkernode>"
     ports:
       - "9002:9002"
+      - "9001:9001"
     depends_on:
       - flink-master
     volumes_from:

@@ -25,6 +25,7 @@ class S(BaseHTTPRequestHandler):
     def do_POST(self):
         # Doesn't do anything with posted data
         flink_endpoint = os.environ['FLINK_ENDPOINT']
+        idm_endpoint = os.environ['IDM_ENDPOINT']
         prefix = str(randint(0, 9)+time.time())
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
@@ -36,7 +37,7 @@ class S(BaseHTTPRequestHandler):
             previous_job_id = data["previousJobId"]
             self.kill_job(previous_job_id, flink_endpoint)
         jar_id = self.upload_jar(directory, flink_endpoint)
-        job_id = self.run_job(jar_id, flink_endpoint)
+        self.run_job(jar_id, flink_endpoint,idm_endpoint)
         self.delete_jar(jar_id, flink_endpoint)
         self._set_headers()
 
@@ -70,13 +71,17 @@ class S(BaseHTTPRequestHandler):
         shutil.rmtree('./' + directory, ignore_errors=True)
         return jar_id
    
-    def run_job(self, jar_id, flink_endpoint):
+    def run_job(self, jar_id, flink_endpoint, idm_endpoint):
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/" + jar_id + "/run?allowNonRestoredState=true"
         r = requests.post(url = FLINK_ENDPOINT) 
         pastebin_url = json.loads(r.text)
         print("About the running Job:%s"%pastebin_url) 
         job_id = pastebin_url["jobid"]
-        print("About the running Job:%s"%pastebin_url)    
+        IDM_ENDPOINT = "http://" + idm_endpoint + "/idm/applications/:application_id/job_id"
+        data = {"job_id":job_id}
+        r = requests.post(url = IDM_ENDPOINT, json=data)
+        pastebin_url = json.loads(r.text)
+        print("About the IDM Communication:%s"%pastebin_url)
         return job_id  
     
     def delete_jar(self, jar_id, flink_endpoint):
