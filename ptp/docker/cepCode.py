@@ -15,7 +15,7 @@ def createProgram(data):
       pattern = f"pattern{idx}"
       if (ruleType == "COUNT_POLICY"):
         stream = "entityStream"
-        ruleCode = createCountRule(pattern,rule["params"]["numMaxEvents"], rule["params"]["eventWindow"])
+        ruleCode = createCountRule(pattern,rule["params"]["maxNumberEvents"], rule["params"]["eventWindow"])
       elif (ruleType == "AGGREGATION_POLICY"):
         stream = "operationStream"
         ruleCode = createAggregationRule(pattern, rule["params"]["aggregateTime"])
@@ -29,7 +29,7 @@ def createProgram(data):
       program += ruleCode + "\n\n" + addPunishment(stream, pattern, ruleType, punishment) + "\n\n" 
     program += envExecute(id) 
   except:
-    print("There was an error generating the CEP code")	
+    print("cdc was an error generating the CEP code")
   
   return program
 

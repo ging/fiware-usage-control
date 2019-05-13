@@ -4,7 +4,7 @@ from pathlib import Path
 from random import randint
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import socketserver,subprocess,os,requests,json,time,shutil
-import cepCode
+import cepCode, logging
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -24,12 +24,15 @@ class S(BaseHTTPRequestHandler):
         
     def do_POST(self):
         # Doesn't do anything with posted data
-        flink_endpoint = os.environ['FLINK_ENDPOINT']
-        idm_endpoint = os.environ['IDM_ENDPOINT']
-        prefix = str(randint(0, 9)+time.time())
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
         data = json.loads(post_data)
+        logging.info(post_data)
+        app_id = data["id"]
+        self._set_headers()
+        flink_endpoint = os.environ['FLINK_ENDPOINT']
+        idm_endpoint = os.environ['IDM_ENDPOINT']
+        prefix = str(randint(0, 9)+time.time())
         modified_program = self.generate_cep_code(data)
         self.write_program(modified_program, prefix) # <-- Write to disk instead of print
         directory = self.execute_maven(prefix)
@@ -37,11 +40,12 @@ class S(BaseHTTPRequestHandler):
             previous_job_id = data["previousJobId"]
             self.kill_job(previous_job_id, flink_endpoint)
         jar_id = self.upload_jar(directory, flink_endpoint)
-        self.run_job(jar_id, flink_endpoint,idm_endpoint)
+        self.run_job(jar_id, flink_endpoint,idm_endpoint,app_id)
         self.delete_jar(jar_id, flink_endpoint)
         self._set_headers()
 
     def execute_maven(self, prefix):
+        logging.info("Packaging program with maven")
         mypath = './cep' + prefix
         os.chdir(mypath)
         p = subprocess.Popen(["mvn clean package"],shell=True, stdout = subprocess.PIPE)
@@ -51,6 +55,7 @@ class S(BaseHTTPRequestHandler):
         return mypath
     
     def upload_jar(self, directory, flink_endpoint):
+        logging.info("Uploading Jar")
         mypath = directory+'/target'
         os.chdir(mypath)
         files = os.listdir('./')
@@ -71,13 +76,14 @@ class S(BaseHTTPRequestHandler):
         shutil.rmtree('./' + directory, ignore_errors=True)
         return jar_id
    
-    def run_job(self, jar_id, flink_endpoint, idm_endpoint):
+    def run_job(self, jar_id, flink_endpoint, idm_endpoint,app_id):
+        logging.info("Runing Job")
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/" + jar_id + "/run?allowNonRestoredState=true"
         r = requests.post(url = FLINK_ENDPOINT) 
         pastebin_url = json.loads(r.text)
         print("About the running Job:%s"%pastebin_url) 
         job_id = pastebin_url["jobid"]
-        IDM_ENDPOINT = "http://" + idm_endpoint + "/idm/applications/:application_id/job_id"
+        IDM_ENDPOINT = "http://" + idm_endpoint + "/idm/applications/"+app_id+"/job_id"
         data = {"job_id":job_id}
         r = requests.post(url = IDM_ENDPOINT, json=data)
         pastebin_url = json.loads(r.text)
@@ -85,6 +91,7 @@ class S(BaseHTTPRequestHandler):
         return job_id  
     
     def delete_jar(self, jar_id, flink_endpoint):
+        logging.info("Deleting Jar"+jar_id)
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/" + jar_id
         r = requests.delete(url = FLINK_ENDPOINT)
     
@@ -92,6 +99,7 @@ class S(BaseHTTPRequestHandler):
         return cepCode.createProgram(data)
 
     def write_program(self, code, prefix):
+        logging.info("Generating Usage Control Program")
         os.chdir('./')
         shutil.copytree('./cep', './cep' + prefix)
         f = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "r+")
@@ -121,6 +129,7 @@ class S(BaseHTTPRequestHandler):
         u.close()
 
     def kill_job(self, job_id, flink_endpoint):
+        logging.info("Killing Job"+job_id)
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jobs/" + job_id
         requests.patch(url = FLINK_ENDPOINT)
 
