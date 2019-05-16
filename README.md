@@ -120,6 +120,10 @@ The policies that the data provider wants to enforce on the data are the followi
  
  
 The data provider has to define these policies using the web interface that KeyRock provides. 
+
+![Keyrock creating policies](docs/images/usage-idm.png)
+
+
 When the data provider creates these policies in KeyRock and applies them to a certain user, KeyRock translates them into the FI-ODRL language.
  ```xml
  // TODO
