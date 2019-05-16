@@ -38,10 +38,14 @@ For some cases the Data Provider and Data Controller can be integrated in only o
  
 ## Scenario
 The scenario presented in this repository  is composed by:
-Data Consumer:
+
+**Data Consumer:**
+
  * Apache Flink  (1 Job manager and 1 task manager)
  * A streaming Job for making the Aggregations and operations of some values of a notified Entity created in the Orion context Broker
-Data Provider
+
+**Data Provider:**
+
  * One IDM keyrock instance for Access control and define the Usage control Policies
  * One Orion (with mongo) instance where the entities are created.
  * One PEP proxy instance for access control
