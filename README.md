@@ -130,7 +130,7 @@ When the data provider creates these policies in KeyRock and applies them to a c
  ```
  
 KeyRock notifies the PTP that a new policy has to be enforced. A CEP program is generated from the FI-ODRL policy definition through an extended automata.
-The defined in this example would turn into the following CEP excerpt:
+The defined in this example would turn into the following CEP code excerpt:
 
 ```scala
 // First pattern: At least N events in T.    
