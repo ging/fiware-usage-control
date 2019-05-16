@@ -37,23 +37,20 @@ For some cases the Data Provider and Data Controller can be integrated in only o
 ![usage-architecture-2](docs/images/usage-architecture-2.png)
  
 ## Scenario
-The scenario is composed by:
-User Side:
- * Apache Flink Cluster (1 Job manager and 1 task manager)
- * A streaming Job for making the avg of some values of and Entity created in the Orion context Broker
+The scenario presented in this repository  is composed by:
+Data Consumer:
+ * Apache Flink  (1 Job manager and 1 task manager)
+ * A streaming Job for making the Aggregations and operations of some values of a notified Entity created in the Orion context Broker
 Data Provider
  * One IDM keyrock instance for Access control and define the Usage control Policies
  * One Orion (with mongo) instance where the entities are created.
  * One PEP proxy instance for access control
- * One instance of fluentd which acts as log collector of all the events and execution task of the Apache flink cluster (Data User Side)
- * One instance of a PUB/SUB engine (Kafka) for sending and receiving values from/to the Obligation compliant engine (Apache flink cluster- Data Provider Side)
- * One Apache flink cluster with complex event processing capabilities for analyzing the logs ensure the compliant of the obligations defined in the IDM 
- 
-![usage-scenario](images/usage-scenario.png) 
+ * One instance of a Control Panel Web application for monitoring the usage control rules and punishments
+ * On instance of PTP (Policy Translation Point) for translating the FI-ODRL Policies into streaming program 
+ * One Apache Flink instance with complex event processing capabilities for analyzing the logs ensure the compliant of the obligations defined in the IDM 
+ * One instance of a Supermarket tickets Dataset posting data to the Orion Context Broker
+![usage-scenario](docs/images/usage-scenario.png) 
 
-### Case of use
-
-Th
 
 ## Deployment
 
