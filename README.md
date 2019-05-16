@@ -75,14 +75,10 @@ sudo docker-compose up -d
 ```
 sudo docker ps
 ```
-Once you have all up and running, you need to create the entities in the orion context broker
-5. Give execution permission and execute the create entities script
-```
-chmod 775 -R orion
-./orion/create-entities.sh
-```
 6. Check the orion entities
 ```
 curl localhost:1026/v2/entities -s -S --header 'Accept: application/json' | python -mjson.tool
 ```
-..
+Once you have all up and running you can continue to follow the demo video for the next steps.
+
+[Demo Video](https://drive.google.com/file/d/1o_4KPLG026xG67lXitQeAj98rbZjCGx7/view?usp=sharing) 
