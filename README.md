@@ -9,7 +9,7 @@
 
 Usage control is a promising approach for access control in open, distributed, heterogeneous and network-connected computer environments. It encompasses and enhances traditional access control models, Trust Management (TM) and Digital Rights Management (DRM), and its main novelties are mutability of attributes and continuity of access decision evaluation.
 
-Usage control encompass Data Access control and data Usage Control, a good representation of this concepts are showed in the next figure:
+Usage control encompass Data Access control and Data Usage Control, a good representation of this concepts are showed in the next figure:
 
 ![usage-control-concept](images/usage-concept.png)
 
@@ -23,7 +23,7 @@ Data Usage Control:
  * Related with data ingestion and processing
  * Context of intellectual property protection, privacy protection, compliance with regulations and digital rights management
 
-In order to include the capabilities of usage control, in this repo are include a set of components and operations for providing usage control capabilities over Data coming from the Orion Context Broker and processed by a data streaming processing engine (Apache Flink). First, the architecture and scenario are presented, and then the instructions and resources of how you can replicate the case of use presented.
+In order to include the capabilities of usage control, in this repo are included a set of components and operations for providing usage control capabilities over data coming from the Orion Context Broker and processed by a data streaming processing engine (Apache Flink). First, the architecture and scenario are presented, and then the instructions and resources of how you can replicate the case of use presented.
 ## Architecture
 
 The next figure presents an abstract representation of the architecture of usage control proposed.
