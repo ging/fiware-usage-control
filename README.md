@@ -50,8 +50,8 @@ The different components that make up this architecture are described in detail 
 
 **Data Provider/Controller:**
 
- * **IdM Keyrock**: Component for defining Access and Usage Control Policies
  * **Orion Context Broker**: Component that allows to manage the entire lifecycle of context information
+ * **IdM Keyrock**: Component for defining Access and Usage Control Policies
  * **PEP (Policy Enforcement Point) proxy**: Component for enforcing Access Control Policies
  * **PTP (Policy Translation Point)**: Component for translating the FI-ODRL Policies into a program that checks compliance in real time
  * **PXP/PDP (Policy Execution/Decision Point)**: Component with complex event processing capabilities (CEP) for analyzing the logs in order to verify the compliance of the obligations defined in the IDM and enforce the punishments
@@ -207,8 +207,8 @@ The scenario presented in this repository is composed by a series of building bl
 
 **Data Provider/Controller:**
  
- * One **IdM Keyrock** instance
  * One **Orion** (with MongoDB) instance 
+ * One **IdM Keyrock** instance
  * One **PEP proxy** instance 
  * One **PTP (Policy Translation Point)** instance
  * One **Data Usage Control Panel** web application instance for monitoring the usage control rules and punishments in real-time
