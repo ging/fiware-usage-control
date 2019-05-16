@@ -27,10 +27,13 @@ In order to include the capabilities of usage control, in this repo are included
 ## Architecture
 
 The next figure presents an abstract representation of the architecture of usage control proposed.
-Fist this architecture is divided into two parts: the first one is represented by the Data User side which made the data request and process it
-using the streaming processing engine. The second part is the Data provided side which includes the different components to 
-ensure the complaint of the obligations defined and acts as a Digital Rights Management.
-![usage-architecture](images/usage-architecture.png)
+A general overview of the architecture is presented in the next figure . This scheme is based on a hybrid model based on Data Privacy Directive 95/46/EC and the IDS reference architecture 
+and it is divided in three essential parts:  data provider, data consumer and data controller.
+![usage-architecture-1](docs/images/usage-architecture-1.png)
+ 
+For some cases the Data Provider and Data Controller can be integrated in only one stakeholder inside of the architecture, this is represented in the next figure.
+
+![usage-architecture-2](docs/images/usage-architecture-2.png)
  
 ## Scenario
 The scenario is composed by:
