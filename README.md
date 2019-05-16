@@ -189,7 +189,7 @@ This job is deployed on the Flink Client Cluster using the provided web UI.
 As soon as the job is deployed, the Execution Graph logs and the NGSI Event logs start to be sent to the PDP/PXP, who verifies that policies are being complied with an enforces punishments if they are not.
   
 
-### Monitoring policy enforcement
+#### Monitoring policy enforcement
 
 The data provider has to be aware of when data consumers are not complying with the established policies. 
 For this task, a control panel is provided in which all the events regarding policies can be checked in real-time, as well as a series of statistics on data usage.
