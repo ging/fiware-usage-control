@@ -25,7 +25,7 @@ Usage control encompasses Data Access control and Data Usage Control, a good rep
  * Context of intellectual property protection, privacy protection, compliance with regulations and digital rights management
 
 This repo includes a set of components and operations for providing usage control capabilities over data coming from the Orion Context Broker, processed by a data streaming processing engine (Apache Flink) through the [FIWARE Cosmos Orion Flink Connector](https://github.com/ging/fiware-cosmos-orion-flink-connector). 
-First, the architecture and scenario are presented, followed by the instructions and resources of how you can replicate use case presented.
+First, the architecture and scenario are presented, followed by the instructions and resources of how you can replicate the use case presented.
 
 ## Architecture
 
