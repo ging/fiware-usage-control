@@ -11,13 +11,13 @@ Usage control is a promising approach for access control in open, distributed, h
 
 Usage control encompass Data Access control and Data Usage Control, a good representation of this concepts are showed in the next figure:
 
-![usage-control-concept](images/usage-concept.png)
+![usage-control-concept](docs/images/usage-concept.png)
 
-Data Access Control:
+**Data Access Control:**
  * Specify who can access what resource
  * Also the rights to access it (actions)
 
-Data Usage Control:
+**Data Usage Control:**
  * Ensures data sovereignty
  * Regulates what is allowed to happen with the data  (future use).
  * Related with data ingestion and processing
@@ -29,6 +29,7 @@ In order to include the capabilities of usage control, in this repo are included
 The next figure presents an abstract representation of the architecture of usage control proposed.
 A general overview of the architecture is presented in the next figure . This scheme is based on a hybrid model based on Data Privacy Directive 95/46/EC and the IDS reference architecture 
 and it is divided in three essential parts:  data provider, data consumer and data controller.
+
 ![usage-architecture-1](docs/images/usage-architecture-1.png)
  
 For some cases the Data Provider and Data Controller can be integrated in only one stakeholder inside of the architecture, this is represented in the next figure.
