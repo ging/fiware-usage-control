@@ -67,6 +67,9 @@ git clone https://github.com/ging/fiware-usage-control.git
 ```
 cd fiware-usage-control
 ```
+For deploying the Data Usage control components of the Data Provider-Controller side run containers 
+defined in the docker-compose.yml file with their respective ENV variables
+
 3. Run containers
 ```
 sudo docker-compose up -d
@@ -78,6 +81,20 @@ sudo docker ps
 6. Check the orion entities
 ```
 curl localhost:1026/v2/entities -s -S --header 'Accept: application/json' | python -mjson.tool
+```
+Now, for deploying the component of the Data Consumer side follow the next steps:
+
+1. Go to the flink folder
+```
+cd flink
+```
+2. Run Flink containers
+```
+sudo docker-compose up -d
+```
+3. Check if all the containers are running
+```
+sudo docker ps
 ```
 Once you have all up and running you can continue to follow the demo video for the next steps.
 
