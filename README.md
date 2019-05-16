@@ -70,7 +70,7 @@ The data involved is represented by a Ticket Entity available in Orion. This ent
 Each of these items includes the number of units purchased (`net_am`), the unit price (`net_am`) and the description of the item (`desc`).
 A sample entity is presented below:
 
-```
+```json
 {
   "id":"ticket",
   "type":"ticket",
@@ -121,14 +121,14 @@ The policies that the data provider wants to enforce on the data are the followi
  
 The data provider has to define these policies using the web interface that KeyRock provides. 
 When the data provider creates these policies in KeyRock and applies them to a certain user, KeyRock translates them into the FI-ODRL language.
- ```
+ ```xml
  // TODO
  ```
  
 KeyRock notifies the PTP that a new policy has to be enforced. A CEP program is generated from the FI-ODRL policy definition through an extended automata.
 The defined in this example would turn into the following CEP excerpt:
 
-```
+```scala
 // First pattern: At least N events in T.    
 val countPattern2 = Pattern.begin[Entity]("events" )
     .timesOrMore(200).within(Time.seconds(15))
@@ -157,7 +157,7 @@ The generated CEP program is deployed and receives the logs from the user proces
 The data user wants to extract value in real-time from the data received. Specifically, he/she is interested in knowing that the average purchase price is for the supermarket clients every hour. 
 In order to achieve this, he/she may write a job like such:
 
-```
+```scala
 val env = StreamExecutionEnvironment.getExecutionEnvironment
 
 // Create Orion Source. Receive notifications on port 9001
@@ -221,26 +221,26 @@ The scenario presented in this repository is composed by a series of building bl
 For deploying and running this scenario you need to have docker and docker-compose
 
 1. Clone the repository
-```
+```bash
 git clone https://github.com/ging/fiware-usage-control.git
 ```
 2. Access the root directory
-```
+```bash
 cd fiware-usage-control
 ```
 For deploying the Data Usage Control components of the Data Provider-Controller side run containers 
 defined in the `docker-compose.yml` file with their respective ENV variables
 
 3. Run containers
-```
+```bash
 sudo docker-compose up -d
 ```
 4. Check if all the containers are running
-```
+```bash
 sudo docker ps
 ```
 6. Check the orion entities
-```
+```bash
 curl localhost:1026/v2/entities -s -S --header 'Accept: application/json' | python -mjson.tool
 ```
 #### Data Consumer
@@ -248,15 +248,15 @@ curl localhost:1026/v2/entities -s -S --header 'Accept: application/json' | pyth
 Now, for deploying the component on the Data Consumer side, follow the next steps:
 
 1. Go to the `flink` folder
-```
+```bash
 cd flink
 ```
 2. Deploy the Flink Cluster
-```
+```bash
 sudo docker-compose up -d
 ```
 3. Check if all the containers are running
-```
+```bash
 sudo docker ps
 ```
 
