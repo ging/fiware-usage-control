@@ -1,4 +1,4 @@
-# Fiware Usage Control
+# FIWARE Usage Control
 
 
 [![FIWARE Security](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/security.svg)](https://www.fiware.org/developers/catalogue/)
