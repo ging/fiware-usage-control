@@ -66,20 +66,73 @@ services:
     networks:
       idm_network:
         ipv4_address: 172.18.1.8
-
-  control-panel:
-    image: ging/control-panel
-    hostname: control-panel
-    container_name: control-panel
-    expose:
-      - "3001"
-    ports:
-      - "3001:3001"
-    depends_on:
-      - cep-master
+  mongo:
+    image: mongo:3.4
+    command: --nojournal
     networks:
       idm_network:
-        ipv4_address: 172.18.1.15
+        ipv4_address: 172.18.1.9
+
+  orion:
+    image: fiware/orion
+    links:
+      - mongo
+    ports:
+      - "1026:1026"
+    command: -dbhost mongo
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.10
+
+  pep-ptp:
+    image: ging/pep-ptp
+    hostname: pep-ptp
+    container_name: pep-ptp
+    ports:
+      - "24225:24225"
+    environment:
+      - PEP_PROXY_PORT=24225
+      - PEP_PROXY_IDM_HOST=172.18.1.6
+      - PEP_PROXY_IDM_PORT=3000
+      - PEP_PROXY_APP_HOST=172.18.1.8
+      - PEP_PROXY_APP_PORT=9200
+      - PEP_PROXY_APP_ID=a2b33c0c-c0d1-4807-af21-39613a2ff053
+      - PEP_PROXY_USERNAME=pep_proxy_6d21d0b9-eb0a-484b-b8a7-7719b806e695
+      - PEP_PASSWORD=pep_proxy_cac9bad6-203d-44cc-866f-549149465821
+    depends_on:
+      - fiware-idm
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.11
+
+  mongo-ds:
+    image: ging/mongo-dataset
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - vol-mongo:/data
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.12
+
+  dataset:
+    image: ging/dataset
+    restart: always
+    links:
+      - mongo-ds
+    environment:
+      - ORION_ENDPOINT=172.18.1.10:1026
+      - MONGO_URI=mongodb://172.18.1.12:27017/
+      - START_DATE=2016-01-14
+      - END_DATE=2016-01-15
+      - FRECUENCY=5
+    depends_on:
+      - mongo-ds
+      - orion
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.13
 
   ptp:
     image: ging/ptp
@@ -98,6 +151,19 @@ services:
       idm_network:
         ipv4_address: 172.18.1.14
 
+  control-panel:
+    image: ging/control-panel
+    hostname: control-panel
+    container_name: control-panel
+    expose:
+      - "3001"
+    ports:
+      - "3001:3001"
+    depends_on:
+      - cep-master
+    networks:
+      idm_network:
+        ipv4_address: 172.18.1.15
 networks:
   idm_network:
     driver: bridge
