@@ -16,13 +16,11 @@ object Signals {
 
   /**
     * Create alert signal depending on policy rule
-    * @param rule Name of the rule
     * @param content List of events that trigger the rule
     * @param punishment Punishment for not complying
     * @return
     */
   def createAlert(rule: Policy.Value, content: Map[String,Iterable[Any]], punishment: Punishment.Value) : Any = {
-
     val enforced = performPunishment(punishment, content)
     val log = rule match {
       case Policy.COUNT_POLICY => {

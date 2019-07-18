@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory
   * Flink Complex Event Processing
   *
   */
-object CEPMonitoring {
+object CEPMonitoring{
   private lazy val logger = LoggerFactory.getLogger(getClass)
   implicit val formats = DefaultFormats
   val executionGraphProperties: Seq[String] =  Seq.empty
@@ -31,11 +31,11 @@ object CEPMonitoring {
       .flatMap(_.msg.split(" -> "))
       .map(ExecutionGraph)
 
-      // Entity Stream
-      val entityStream : DataStream[Entity] = stream
-        .filter(_.isLeft)
-        .map(_.left.get )
-        .flatMap(_.entities)
+    // Entity Stream
+    val entityStream : DataStream[Entity] = stream
+      .filter(_.isLeft)
+      .map(_.left.get )
+      .flatMap(_.entities)
 
     // TODO
 

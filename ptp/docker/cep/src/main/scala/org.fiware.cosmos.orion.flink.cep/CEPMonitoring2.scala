@@ -9,7 +9,6 @@ import org.json4s.DefaultFormats
 import org.slf4j.LoggerFactory
 import org.apache.flink.cep.scala.CEP
 import org.apache.flink.cep.scala.pattern.Pattern
-
 /**
   * FIWARE Data Usage Control
   * Flink Complex Event Processing
@@ -41,8 +40,8 @@ object CEPMonitoring2{
 
     // First pattern: At least N events in T. 12h -14h
     val countPattern = Pattern.begin[Entity]("events" )
-        .timesOrMore(Policies.numMaxEvents+1).within(Time.seconds(Policies.facturationTime))
-        .where(_=>Policies.checkTime("12:00","14:00", true))
+      .timesOrMore(Policies.numMaxEvents+1).within(Time.seconds(Policies.facturationTime))
+      .where(_=>Policies.checkTime("12:00","14:00", true))
 
     CEP.pattern(entityStream, countPattern).select(events =>
       Signals.createAlert(Policy.COUNT_POLICY, events, Punishment.MONETIZE))
@@ -68,7 +67,5 @@ object CEPMonitoring2{
 
     env.execute("CEP Monitoring")
   }
-
-
 
 }
