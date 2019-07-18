@@ -1,4 +1,4 @@
-# Fiware Usage Control
+# FIWARE Usage Control
 
 
 [![FIWARE Security](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/security.svg)](https://www.fiware.org/developers/catalogue/)
@@ -10,7 +10,7 @@
 Usage control is a promising approach for access control in open, distributed, heterogeneous and network-connected computer environments. 
 It encompasses and enhances traditional access control models, Trust Management (TM) and Digital Rights Management (DRM), and its main novelties are mutability of attributes and continuity of access decision evaluation.
 
-Usage control encompasses Data Access control and Data Usage Control, a good representation of this concepts is shown in the next figure:
+Usage control encompasses Data Access control and Data Usage Control. A good representation of this concepts is shown in the next figure:
 
 ![usage-control-concept](docs/images/usage-concept.png)
 
@@ -24,14 +24,15 @@ Usage control encompasses Data Access control and Data Usage Control, a good rep
  * Related with data ingestion and processing
  * Context of intellectual property protection, privacy protection, compliance with regulations and digital rights management
 
-This repo includes a set of components and operations for providing usage control capabilities over data coming from the Orion Context Broker, processed by a data streaming processing engine (Apache Flink) through the [FIWARE Cosmos Orion Flink Connector](https://github.com/ging/fiware-cosmos-orion-flink-connector). 
+This repository includes a set of components and operations for providing usage control capabilities over data coming from the Orion Context Broker, processed by a data streaming processing engine (Apache Flink) through the [FIWARE Cosmos Orion Flink Connector](https://github.com/ging/fiware-cosmos-orion-flink-connector). 
 First, the architecture and scenario are presented, followed by the instructions and resources of how you can replicate the use case presented.
+
 
 ## Architecture
 
 The next figure presents an abstract representation of the proposed architecture for usage control .
 A general overview of the architecture is presented in the next figure. 
-This scheme is based on a hybrid model based on *[Data Privacy Directive 95/46/EC](https://eur-lex.europa.eu/legal-content/en/TXT/?uri=CELEX%3A31995L0046)* and the *[IDS reference architecture](https://www.fraunhofer.de/content/dam/zv/de/Forschungsfelder/industrial-data-space/IDS_Referenz_Architecture.pdf)* 
+This scheme is derived from a hybrid model based on the *[Data Privacy Directive 95/46/EC](https://eur-lex.europa.eu/legal-content/en/TXT/?uri=CELEX%3A31995L0046)* and the *[IDS reference architecture](https://www.fraunhofer.de/content/dam/zv/de/Forschungsfelder/industrial-data-space/IDS_Referenz_Architecture.pdf)* 
 and it is divided in three essential parts: Data Provider, Data Consumer and Data Controller.
 
 ### Three stakeholders
@@ -63,10 +64,10 @@ A fully working scenario is provided in this repository, which can be easily mod
 
 ### Use case description
 
-The use case proposed is based on a supermarket scenario. It consists on a series of stores that post each purchase data to Orion. The data provider would like to make these data available to customers, only if their use of these data complies with a series of policies that both parties agreed upon.
+The use case proposed is based on a supermarket scenario. It consists on a series of stores that post data from each purchase to Orion. The data provider would like to make these data available to customers, only if their use of these data complies with a series of policies that both parties have agreed upon.
 
 #### Data definition
-The data involved is represented by a Ticket Entity available in Orion. This entity contains purchase information on the specific store (`mall`), the `client`, the `date`, and a list with the purchased `items`. 
+The data involved in this scenario is represented by a Ticket Entity available in Orion. This entity contains purchase information on the specific store (`mall`), the `client`, the `date`, and a list with the purchased `items`. 
 Each of these items includes the number of units purchased (`net_am`), the unit price (`net_am`) and the description of the item (`desc`).
 A sample entity is presented below:
 
@@ -130,7 +131,7 @@ When the data provider creates these policies in KeyRock and applies them to a c
  ```
  
 KeyRock notifies the PTP that a new policy has to be enforced. A CEP program is generated from the FI-ODRL policy definition through an extended automata.
-The defined in this example would turn into the following CEP code excerpt:
+The policies defined in this example would turn into the following CEP code excerpt:
 
 ```scala
 // First pattern: At least N events in T.    
@@ -158,7 +159,7 @@ The generated CEP program is deployed and receives the logs from the user proces
  
 #### The data user program
 
-The data user wants to extract value in real-time from the data received. Specifically, he/she is interested in knowing that the average purchase price is for the supermarket clients every hour. 
+The data user wants to extract value in real-time from the data received. Specifically, he/she is interested in knowing what the average purchase price is for the supermarket clients every hour. 
 In order to achieve this, he/she may write a job like such:
 
 ```scala
@@ -221,7 +222,7 @@ The scenario presented in this repository is composed by a series of building bl
 
 ![usage-scenario](docs/images/usage-scenario.png) 
 
-#### Data Provider/Controller
+
 For deploying and running this scenario you need to have docker and docker-compose
 
 1. Clone the repository
@@ -232,6 +233,8 @@ git clone https://github.com/ging/fiware-usage-control.git
 ```bash
 cd fiware-usage-control
 ```
+
+#### Data Provider/Controller
 For deploying the Data Usage Control components of the Data Provider-Controller side run containers 
 defined in the `docker-compose.yml` file with their respective ENV variables
 
@@ -265,6 +268,6 @@ sudo docker ps
 ```
 
 
-Once you have everything up and running, you can continue to follow the demo video for the next steps.
+Once you have everything up and running, you can go on to follow the demo video for the next steps.
 
 **[Demo Video](https://drive.google.com/file/d/1o_4KPLG026xG67lXitQeAj98rbZjCGx7/view?usp=sharing)**

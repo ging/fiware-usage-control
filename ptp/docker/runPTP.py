@@ -48,10 +48,10 @@ class S(BaseHTTPRequestHandler):
         logging.info("Packaging program with maven")
         mypath = './cep' + prefix
         os.chdir(mypath)
-        p = subprocess.Popen(["mvn clean package"],shell=True, stdout = subprocess.PIPE)
+        p = subprocess.Popen(["mvn package"],shell=True, stdout = subprocess.PIPE)
         output, err = p.communicate()
         os.chdir("..")
-        print (output)
+        logging.info(output)
         return mypath
     
     def upload_jar(self, directory, flink_endpoint):
@@ -63,7 +63,7 @@ class S(BaseHTTPRequestHandler):
         for name in files:
             if 'cep' in name and 'original' not in name:
                 jarName = name
-                print(name)
+                logging.info("Jar Name "+name)
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/upload"
         file_list = [  
         ('jarfile', (jarName, open(jarName, 'rb'), mypath))]
@@ -71,27 +71,26 @@ class S(BaseHTTPRequestHandler):
         pastebin_url = json.loads(r.text) 
         args = pastebin_url["filename"].split("/")
         jar_id = args[len(args) - 1]
-        print("About Uploaded Jar:%s"%pastebin_url)
+        logging.info("About Uploaded Jar:%s "%pastebin_url)
         os.chdir('../..')
         shutil.rmtree('./' + directory, ignore_errors=True)
         return jar_id
    
     def run_job(self, jar_id, flink_endpoint, idm_endpoint,app_id):
-        logging.info("Runing Job")
+        logging.info("Running Job")
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/" + jar_id + "/run?allowNonRestoredState=true"
         r = requests.post(url = FLINK_ENDPOINT) 
         pastebin_url = json.loads(r.text)
-        print("About the running Job:%s"%pastebin_url) 
+        logging.info("About the running Job:%s "%pastebin_url)
         job_id = pastebin_url["jobid"]
         IDM_ENDPOINT = "http://" + idm_endpoint + "/idm/applications/"+app_id+"/job_id"
         data = {"job_id":job_id}
-        r = requests.post(url = IDM_ENDPOINT, json=data)
-        pastebin_url = json.loads(r.text)
-        print("About the IDM Communication:%s"%pastebin_url)
+        r2 = requests.post(url = IDM_ENDPOINT, json=data)
+        logging.info("About the IDM Communication:%s"%r2.status_code)
         return job_id  
     
     def delete_jar(self, jar_id, flink_endpoint):
-        logging.info("Deleting Jar"+jar_id)
+        logging.info("Deleting Jar "+jar_id)
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jars/" + jar_id
         r = requests.delete(url = FLINK_ENDPOINT)
     
@@ -103,7 +102,7 @@ class S(BaseHTTPRequestHandler):
         os.chdir('./')
         shutil.copytree('./cep', './cep' + prefix)
         f = open(f"./cep{prefix}/src/main/scala/org.fiware.cosmos.orion.flink.cep/CEPMonitoring.scala", "r+")
-        print ("Name of the file: ", f.name)
+        logging.info("Name of the file: "+ f.name)
         part1 = ""
         part2 = ""
         count = 0
@@ -129,20 +128,22 @@ class S(BaseHTTPRequestHandler):
         u.close()
 
     def kill_job(self, job_id, flink_endpoint):
-        logging.info("Killing Job"+job_id)
+        logging.info("Killing Job "+job_id)
         FLINK_ENDPOINT = "http://" + flink_endpoint + "/jobs/" + job_id
         requests.patch(url = FLINK_ENDPOINT)
 
         
 def run(server_class=HTTPServer, handler_class=S, port=8092):
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    logging.basicConfig(format='%(asctime)s  %(levelname)s   %(name)s - %(message)s')
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
-    print ('Starting httpd...')
+    logging.info ('Starting httpd...at port '+str(port))
     httpd.serve_forever()
 
 if __name__ == "__main__":
     from sys import argv
-
     if len(argv) == 2:
         run(port=int(argv[1]))
     else:
