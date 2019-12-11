@@ -78,7 +78,7 @@ under the License.
 		<dependency>
 			<groupId>org.fiware.cosmos</groupId>
 			<artifactId>orion.flink.connector</artifactId>
-			<version>1.0.4-genova</version>
+			<version>1.2.2</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.json4s/json4s-jackson -->

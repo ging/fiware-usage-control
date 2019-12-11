@@ -189,9 +189,13 @@ val processedDataStream = eventStream
     env.execute("Supermarket Job")
 
 ```
-  
-This job is deployed on the Flink Client Cluster using the provided web UI.
-As soon as the job is deployed, the Execution Graph logs and the NGSI Event logs start to be sent to the PDP/PXP, who verifies that policies are being complied with an enforces punishments if they are not.
+
+The Flink job must be compiled into a JAR file. Maven will download all the necessary dependencies to build the JAR, except for the Cosmos connector. You need to [download](https://github.com/ging/fiware-cosmos-orion-flink-connector/releases/latest) it and install it manually:
+
+```
+mvn install:install-file -Dfile=$(PATH_DOWNLOAD)/orion.flink.connector-1.2.2.jar -DgroupId=org.fiware.cosmos -DartifactId=orion.flink.connector -Dversion=1.2.2 -Dpackaging=jar
+```
+Once compiled, the job can be deployed on the Flink Client Cluster using the provided web UI. As soon as the job is deployed, the Execution Graph logs and the NGSI Event logs start to be sent to the PDP/PXP, who verifies that policies are being complied with an enforces punishments if they are not.
   
 
 #### Monitoring policy enforcement
