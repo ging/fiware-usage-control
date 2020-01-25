@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: mongo-ds
+  name: mongo-ds
+  namespace: usage-control
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mongo-ds
+    spec:
+      containers:
+      - image: ging/mongo-dataset
+        name: mongo-ds
+        ports:
+        - containerPort: 27017
+#        volumeMounts:
+#        - mountPath: /data
+#          name: vol-mongo
+      restartPolicy: Always
+#      volumes:
+#      - name: vol-mongo
+#        persistentVolumeClaim:
+#          claimName: vol-mongo

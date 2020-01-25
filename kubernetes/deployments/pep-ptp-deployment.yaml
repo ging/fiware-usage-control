@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: pep-ptp
+  name: pep-ptp
+  namespace: usage-control
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pep-ptp
+    spec:
+      containers:
+      - env:
+        - name: PEP_PASSWORD
+          value: pep_proxy_cac9bad6-203d-44cc-866f-549149465821
+        - name: PEP_PROXY_APP_HOST
+          value: flink-jobmanager
+        - name: PEP_PROXY_APP_ID
+          value: a2b33c0c-c0d1-4807-af21-39613a2ff053
+        - name: PEP_PROXY_APP_PORT
+          value: "9200"
+        - name: PEP_PROXY_IDM_HOST
+          value: fiware-idm
+        - name: PEP_PROXY_IDM_PORT
+          value: "3000"
+        - name: PEP_PROXY_PORT
+          value: "24225"
+        - name: PEP_PROXY_USERNAME
+          value: pep_proxy_6d21d0b9-eb0a-484b-b8a7-7719b806e695
+        image: ging/pep-ptp
+        name: pep-ptp
+        ports:
+        - containerPort: 24225
+      restartPolicy: Always

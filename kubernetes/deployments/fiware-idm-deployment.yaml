@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: fiware-idm
+  name: fiware-idm
+  namespace: usage-control
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: fiware-idm
+    spec:
+      containers:
+      - env:
+        - name: IDM_DB_HOST
+          value: mysql
+        - name: IDM_PTP_HOST
+          value: 172.18.1.14
+        - name: IDM_PTP_PORT
+          value: "8092"
+        - name: IDM_USAGE_CONTROL_ENABLED
+          value: "true"
+        image: fiware/idm
+        name: fiware-idm
+        ports:
+        - containerPort: 3000
+        - containerPort: 443
+        resources: {}
+        stdin: true
+        tty: true
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: ptp
+  name: ptp
+  namespace: usage-control
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ptp
+    spec:
+      containers:
+      - env:
+        - name: FLINK_ENDPOINT
+          value: flink-jobmanager:8081
+        - name: IDM_ENDPOINT
+          value: fiware-idm:3000
+        image: ging/ptp
+        name: ptp
+        ports:
+        - containerPort: 8092
+      restartPolicy: Always

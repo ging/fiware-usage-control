@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: dataset
+  name: dataset
+  namespace: usage-control
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dataset
+    spec:
+      containers:
+      - env:
+        - name: END_DATE
+          value: 2016-01-15
+        - name: FRECUENCY
+          value: "5"
+        - name: MONGO_URI
+          value: mongodb://mongo-ds:27017/
+        - name: ORION_ENDPOINT
+          value: orion:1026
+        - name: START_DATE
+          value: 2016-01-14
+        image: ging/dataset
+        name: dataset
+      restartPolicy: Always

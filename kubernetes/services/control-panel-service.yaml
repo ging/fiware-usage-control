@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: control-panel
+  name: control-panel
+  namespace: usage-control
+spec:
+  type: LoadBalancer
+  ports:
+  - name: "control-panel"
+    port: 3001
+    targetPort: 3001
+  selector:
+    app: control-panel

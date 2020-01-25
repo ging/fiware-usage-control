@@ -1,0 +1,28 @@
+apiVersion: storage.k8s.io/v1beta1
+kind: StorageClass
+metadata:
+  name: local-storage
+  namespace: usage-control
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+allowVolumeExpansion: true
+---
+##version for create pd in gcloud
+apiVersion: "v1"
+kind: "PersistentVolume"
+metadata:
+  name: data-volume-1
+  namespace: usage-control
+spec:
+  capacity:
+    storage: 250Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  gcePersistentDisk:
+    fsType: ext4
+    pdName: usage-control-volume
+---
+

@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: orion
+  name: orion
+  namespace: usage-control
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: orion
+    spec:
+      containers:
+       - image: fiware/orion
+         name: orion
+         ports:
+         - containerPort: 1026
+         args: ["-dbhost","mongo"]
+      restartPolicy: Always

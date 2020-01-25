@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pep-ptp
+  name: pep-ptp
+  namespace: usage-control
+spec:
+  clusterIP: None
+  ports:
+  - name: "24225"
+    port: 24225
+    targetPort: 24225
+  selector:
+    app: pep-ptp

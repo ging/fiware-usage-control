@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ptp
+  name: ptp
+  namespace: usage-control
+spec:
+  clusterIP: None  
+  ports:
+  - name: "8092"
+    port: 8092
+    targetPort: 8092
+  selector:
+    app: ptp
+

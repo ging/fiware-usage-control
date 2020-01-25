@@ -1,4 +1,4 @@
-FROM mongo
+FROM mongo:4.0.5
 
 RUN apt-get update &&\
     apt-get install unzip wget

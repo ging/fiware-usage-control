@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: control-panel
+  name: control-panel
+  namespace: usage-control
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: control-panel
+    spec:
+      containers:
+      - image: ging/control-panel
+        name: control-panel
+        ports:
+        - containerPort: 3001
+      restartPolicy: Always
