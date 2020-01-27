@@ -15,11 +15,11 @@ spec:
       containers:
       - env:
         - name: PEP_PASSWORD
-          value: pep_proxy_cac9bad6-203d-44cc-866f-549149465821
+          value: pep_proxy_9112a0a7-1244-4e4d-95bf-ee472de422ed
         - name: PEP_PROXY_APP_HOST
-          value: flink-jobmanager
+          value: flink-taskmanager
         - name: PEP_PROXY_APP_ID
-          value: a2b33c0c-c0d1-4807-af21-39613a2ff053
+          value: 18d0cd90-8684-4e84-b806-c34f5d18ff02
         - name: PEP_PROXY_APP_PORT
           value: "9200"
         - name: PEP_PROXY_IDM_HOST
@@ -29,7 +29,7 @@ spec:
         - name: PEP_PROXY_PORT
           value: "24225"
         - name: PEP_PROXY_USERNAME
-          value: pep_proxy_6d21d0b9-eb0a-484b-b8a7-7719b806e695
+          value: pep_proxy_349d12d4-eb57-41d7-8bd4-1e5a7015f4eb
         image: ging/pep-ptp
         name: pep-ptp
         ports:

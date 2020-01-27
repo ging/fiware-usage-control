@@ -6,7 +6,7 @@ metadata:
   name: pep-ptp
   namespace: usage-control
 spec:
-  clusterIP: None
+  type: LoadBalancer
   ports:
   - name: "24225"
     port: 24225
