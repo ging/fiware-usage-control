@@ -4,7 +4,7 @@ metadata:
   name: flink-taskmanager
   namespace: usage-control
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -12,38 +12,35 @@ spec:
         component: taskmanager
     spec:
       containers:
-      - env:
-        - name: FLINK_MASTER_PORT_6123_TCP_ADDR
-          value: flink-jobmanager
-        name: taskmanager
-        image: ging/flink-cep-worker:1.7.2-hadoop2.8
-#        workingDir: /opt/flink
-#        command: ["/bin/bash", "-c", "$FLINK_HOME/bin/taskmanager.sh start; \
-#          while :;
-#          do
-#            if [[ -f $(find log -name '*taskmanager*.log' -print -quit) ]];
-#              then tail -f -n +1 log/*taskmanager*.log;
-#            fi;
-#          done"]
+      - name: taskmanager
+        image: flink:1.9.1-scala_2.11
+        workingDir: /opt/flink
+        command: ["/bin/bash", "-c", "$FLINK_HOME/bin/taskmanager.sh start; \
+          while :;
+          do
+            if [[ -f $(find log -name '*taskmanager*.log' -print -quit) ]];
+              then tail -f -n +1 log/*taskmanager*.log;
+            fi;
+          done"]
         ports:
         - containerPort: 6122
           name: rpc
-          containerPort: 9200
-          name: traces
+        - containerPort: 9200
+          name: control-in
         livenessProbe:
           tcpSocket:
             port: 6122
           initialDelaySeconds: 30
           periodSeconds: 60
-#        volumeMounts:
-#        - name: flink-config-volume
-#          mountPath: /opt/flink/conf/
-#      volumes:
-#      - name: flink-config-volume
-#        configMap:
-#          name: flink-config
-#          items:
-#          - key: flink-conf.yaml
-#            path: flink-conf.yaml
-#          - key: log4j.properties
-#            path: log4j.properties
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf/
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: flink-config
+          items:
+          - key: flink-conf.yaml
+            path: flink-conf.yaml
+          - key: log4j.properties
+            path: log4j.properties

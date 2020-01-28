@@ -129,13 +129,13 @@
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-scala_2.11</artifactId>
-          <version>1.7.2</version>
+          <version>1.9.1</version>
           <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-streaming-scala_2.11</artifactId>
-          <version>1.7.2</version>
+          <version>1.9.1</version>
           <scope>compile</scope>
         </dependency>
         <dependency>
@@ -159,7 +159,7 @@
     <scala.version>2.11.12</scala.version>
     <scala.binary.version>2.11</scala.binary.version>
     <play2.version>2.4.6</play2.version>
-    <flink.version>1.7.2</flink.version>
+    <flink.version>1.9.1</flink.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>

@@ -18,7 +18,7 @@ spec:
           value: flink-jobmanager:8081
         - name: IDM_ENDPOINT
           value: fiware-idm:3000
-        image: ging/ptp
+        image: ging/ptp:1.0.1
         name: ptp
         ports:
         - containerPort: 8092
