@@ -1,4 +1,4 @@
-curl -v http://138.4.22.138:1026/v2/subscriptions -s -S -H 'Content-Type: application/json' -d @- <<EOF
+curl -v http://34.69.31.50:1026/v2/subscriptions -s -S -H 'Content-Type: application/json' -d @- <<EOF
 {
   "description": "A subscription to get info about the supermarket",
   "subject": {
@@ -20,7 +20,7 @@ curl -v http://138.4.22.138:1026/v2/subscriptions -s -S -H 'Content-Type: applic
   },
   "notification": {
 	"http": {
-  	"url": "http://138.4.7.94:9001/notify"
+  	"url": "http://104.198.175.134:9001/notify"
 	},
 	"attrs": [
       "_id",

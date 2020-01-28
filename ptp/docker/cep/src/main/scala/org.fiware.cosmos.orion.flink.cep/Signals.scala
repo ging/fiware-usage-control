@@ -46,12 +46,12 @@ object Signals {
     punishment match {
       case Punishment.UNSUBSCRIBE => {
         JobId.subscriptionIds.foreach(sId=>{
-          CBRequests.unsubscribe("172.18.1.10:1026", sId)
+          CBRequests.unsubscribe("orion:1026", sId)
         })
         "Notification unsubscribed"
       }
       case Punishment.KILL_JOB => {
-        CBRequests.killJob("138.4.7.94:8081", JobId.jobId )
+        CBRequests.killJob("104.198.175.134:8081", JobId.jobId )
         "Killed Job with id " + JobId.jobId
       }
       case Punishment.MONETIZE => {
@@ -63,7 +63,7 @@ object Signals {
   private def reportPunishment(rule: Policy.Value, punishment: Punishment.Value, msg: String  ): Unit = {
     val body = write(ControlObject(rule.toString, "11321", JobId.jobId, msg, punishment.toString ))
     try {
-      val req = Http("http://172.18.1.15:3001/report")
+      val req = Http("http://control-panel:3001/report")
         .method("POST")
         .postData(body)
         .header("content-type", "application/json")
