@@ -13,7 +13,9 @@ This deployment is intended to use as a proof of concept of the UCON architectur
 
 1. Create a project in GC, after that, open the GC shell and configure your project:
 
-	```gcloud config set project [your-project-name]```
+	```
+	gcloud config set project [your-project-name]
+	```
 
 2. Create a Kubernetes cluster in your GC project:
 
@@ -47,12 +49,12 @@ This deployment is intended to use as a proof of concept of the UCON architectur
 
 7. Once you have the credentials for your deployment, add those values to the pep-ptp deployment file (deployments/pep-ptp-deployment.yaml) . You need to change the following values:
 	```
-	- name: PEP\_PASSWORD
-	  value: pep\_proxy\_xxxxxxxxxx
-	- name: PEP\_PROXY\_APP\_ID
+	- name: PEP_PASSWORD
+	  value: pep_proxy_xxxxxxxxxx
+	- name: PEP_PROXY_APP_ID
 	  value: a2b33c0c-xxxxxxxxxxxx
-	- name: PEP\_PROXY\_USERNAME
-	  value: pep\_proxy\_xxxxxxxxxxxxxx
+	- name: PEP_PROXY_USERNAME
+	  value: pep_proxy_xxxxxxxxxxxxxx
 	  ```
 
 8. Create the pep-ptp deployment:
@@ -73,25 +75,25 @@ This deployment is intended to use as a proof of concept of the UCON architectur
 	```
 	- IDM_URL=http://IDM-external-IP:3000
 
-	- CLIENT\_ID=your-client-id
+	- CLIENT_ID=your-client-id
 
-	- CLIENT\_SECRET=your-client-secret
+	- CLIENT_SECRET=your-client-secret
 
-	- CALLBACK\_URL=your-callbackurl
+	- CALLBACK_URL=your-callbackurl
 
-	- FLINK\_PORT=8081
+	- FLINK_PORT=8081
 
-	- OAUTH\_CLIENT\_PORT=80
+	- OAUTH_CLIENT_PORT=80
 
-	- FLUENT\_HOST=pep-ptp-external-IP
+	- FLUENT_HOST=pep-ptp-external-IP
 
-	- FLUENT\_PORT=24225
+	- FLUENT_PORT=24225
 	```
 	Flink-worker
 	```
-	- FLUENT\_HOST=pep-ptp-external-IP
+	- FLUENT_HOST=pep-ptp-external-IP
 
-	- FLUENT\_PORT=24225
+	- FLUENT_PORT=24225
 	```
 12. Run Containers:
 	```
