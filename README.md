@@ -26,7 +26,7 @@ This deployment is intended to use as a proof of concept of the UCON architectur
 3. Clone the repository for deploying the Data Provider Infrastructure over kubernetes:
 
 	```
-	git clone -b ucon-kubernetes [https://github.com/ging/fiware-usage-control.git] (https://github.com/ging/fiware-usage-control.git)
+	git clone -b ucon-kubernetes https://github.com/ging/fiware-usage-control.git
 	cd fiware-usage-control
 	```
 	At this point, we provide a manifest script for deploying all the usage control components except the PEP-PTP pod, because this has to be created after you log in to the IDM and get the PEP-Proxy and the APP- credentials.
@@ -61,7 +61,7 @@ This deployment is intended to use as a proof of concept of the UCON architectur
 	```
 9. Now, you can deploy the data consumer infrastructure in a VM on external Server. In your DC&#39;s instance clone the repository (You must have installed docker and docker-compose):
 	```
-	git clone -b ucon-kubernetes [https://github.com/ging/fiware-usage-control.git] (https://github.com/ging/fiware-usage-control.git)
+	git clone -b ucon-kubernetes https://github.com/ging/fiware-usage-control.git
 	```
 10. Access the flink directory in order to run the docker-compose file:
 	```
