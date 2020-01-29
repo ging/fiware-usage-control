@@ -14,12 +14,13 @@ object CBRequests {
     * @param subscriptionId subscriptionId
     */
   def unsubscribe(contextBrokerHost: String, subscriptionId:String ) {
+    CBRequests.logger.info("--------------unsubscribe--------------")
     try {
       val msg = Http("http://"+contextBrokerHost+"/v2/subscriptions/"+subscriptionId).method("DELETE").asString.code
       CBRequests.logger.info(msg.toString)
     } catch {
-      case _: Exception => CBRequests.logger.error("There was an error")
-      case _: Error => CBRequests.logger.error("There was an error")
+      case ex: Exception => CBRequests.logger.error("There was an exception " + ex.toString)
+      case er: Error => CBRequests.logger.error("There was an error " + er.toString)
     }
   }
 
@@ -29,14 +30,15 @@ object CBRequests {
     * @param jobId Flink Job ID
     */
   def killJob(flinkHost: String, jobId:String ) {
+    CBRequests.logger.info("--------------killJob--------------")
     try {
       val msg = Http("http://"+flinkHost+"/jobs/"+jobId)
         .method("PATCH")
         .asString.code
       CBRequests.logger.info(msg.toString)
     } catch {
-      case _: Exception => logger.error("There was an error")
-      case _: Error => logger.error("There was an error")
+      case ex: Exception => CBRequests.logger.error("There was an exception " + ex.toString)
+      case er: Error => CBRequests.logger.error("There was an error " + er.toString)
     }
   }
 }

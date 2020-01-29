@@ -21,6 +21,7 @@ object Signals {
     * @return
     */
   def createAlert(rule: Policy.Value, content: Map[String,Iterable[Any]], punishment: Punishment.Value) : Any = {
+    logger.info("--------------createAlert--------------")
     val enforced = performPunishment(punishment, content)
     val log = rule match {
       case Policy.COUNT_POLICY => {
@@ -43,6 +44,7 @@ object Signals {
     * @param content List of events that trigger the rule
     */
   private def performPunishment(punishment: Punishment.Value, content: Map[String,Iterable[Any]]): String = {
+    logger.info("--------------performunishment--------------")
     punishment match {
       case Punishment.UNSUBSCRIBE => {
         JobId.subscriptionIds.foreach(sId=>{
@@ -61,6 +63,7 @@ object Signals {
   }
 
   private def reportPunishment(rule: Policy.Value, punishment: Punishment.Value, msg: String  ): Unit = {
+    logger.info("--------------reportPunishment--------------")
     val body = write(ControlObject(rule.toString, "11321", JobId.jobId, msg, punishment.toString ))
     try {
       val req = Http("http://control-panel:3001/report")
@@ -70,8 +73,8 @@ object Signals {
         .asString
         .code
     } catch {
-      case _: Exception => logger.error("There was an error sending the log")
-      case _: Error => logger.error("There was an error sending the log")
+      case ex: Exception => logger.error("There was an exception sending the log " + ex.toString)
+      case er: Error => logger.error("There was an error sending the log " + er.toString)
     }
   }
 
