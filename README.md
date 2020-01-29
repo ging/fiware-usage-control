@@ -45,7 +45,17 @@ This deployment is intended to use as a proof of concept of the UCON architectur
 	CEP-Jobmanager:  [External-IP]:8081
 	PEP-PTP: [External-IP]:24225
 	```
-6. At this point, you need to register the app in the IDM and get the credentials.
+6. At this point, you need to register the app in the IDM and get the credentials. Access the IDM's external-ip address and login using the default user (email: admin@test.com and password: 1234). Register an application with the following values:
+
+	```
+	- Name=usage
+	- Description=usage
+	- Url=http://[DC-external-IP]
+	- Callback Url=http://[DC-external-IP]/login
+	```
+Once the application is created, you need to register a PEP Proxy and allow the application to create permanent OAuth2 tokens as shown in the following figure: 
+
+![application-idm](docs/images/application.png)
 
 7. Once you have the credentials for your deployment, add those values to the pep-ptp deployment file (deployments/pep-ptp-deployment.yaml) . You need to change the following values:
 	```
@@ -106,3 +116,5 @@ This deployment is intended to use as a proof of concept of the UCON architectur
 	./subscriptionSupermarket.sh
 	```
 14. Follow the demo video to test the scenario.
+
+**[Demo Video](https://drive.google.com/file/d/1o_4KPLG026xG67lXitQeAj98rbZjCGx7/view?usp=sharing)**
