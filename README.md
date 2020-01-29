@@ -45,7 +45,7 @@ This deployment is intended to use as a proof of concept of the UCON architectur
 	CEP-Jobmanager:  [External-IP]:8081
 	PEP-PTP: [External-IP]:24225
 	```
-6. At this point, you need to register the app in the IDM and get the credentials.
+6. At this point, you need to register the app in the IDM and get the credentials (Note: Choose permanent token).
 
 7. Once you have the credentials for your deployment, add those values to the pep-ptp deployment file (deployments/pep-ptp-deployment.yaml) . You need to change the following values:
 	```
