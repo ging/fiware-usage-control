@@ -24,6 +24,8 @@ kubectl  create -f deployments/fiware-idm-deployment.yaml
 
 kubectl  create -f services/orion-service.yaml
 
+kubectl  create -f services/orion-internal-service.yaml
+
 kubectl  create -f deployments/orion-deployment.yaml
 
 kubectl  create -f config-pod.yaml
@@ -38,6 +40,8 @@ kubectl  create -f deployments/taskmanager-deployment.yaml
 
 #Dataset for running example
 kubectl  create -f services/control-panel-service.yaml
+
+kubectl  create -f services/control-panel-internal-service.yaml
 
 kubectl  create -f deployments/control-panel-deployment.yaml
 
