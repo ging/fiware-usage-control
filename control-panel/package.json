@@ -26,8 +26,8 @@
     "nodemon": "^1.18.11",
     "sequelize": "^5.8.4",
     "sequelize-cli": "^5.4.0",
-    "socket.io": "^2.2.0",
-    "socket.io-client": "^2.2.0",
+    "socket.io": "^3.0.0",
+    "socket.io-client": "^3.0.0",
     "sqlite3": "^4.0.6"
   }
 }
