@@ -614,11 +614,10 @@ decode-uri-component@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
 
-deeks@2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/deeks/-/deeks-2.2.1.tgz#4de360652998fd0a681153a9ffde5dcc6c983f4a"
-  dependencies:
-    underscore "1.9.1"
+deeks@2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/deeks/-/deeks-2.5.1.tgz#c4e18a00cac3f8ff95a306463db8f533c879f436"
+  integrity sha512-fqrBeUz7f1UqaXDRzVB5RG2EfPk15HJRrb2pMZj8mLlSTtz4tRPsK5leFOskoHFPuyZ6+7aRM9j657fvXLkJ7Q==
 
 deep-equal@^1.0.1:
   version "1.0.1"
@@ -671,9 +670,10 @@ detect-libc@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
 
-doc-path@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/doc-path/-/doc-path-2.0.1.tgz#d2adb8bcd31c895b17b92f61eff39aaec04430d2"
+doc-path@3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/doc-path/-/doc-path-3.0.2.tgz#a7df9d58eadce28a2ddd4eda5aa392628fd75b6d"
+  integrity sha512-VRlA2OKSjTbHWj6wmSanxJ338fE/YN8pqmZ0FIWK5JWkIJMFRc4KmD35JtOrnjvVG0WrzOtDDNHx1lN1tkb+lA==
 
 dot-prop@^4.1.0:
   version "4.2.0"
@@ -1517,13 +1517,13 @@ jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
 
-json-2-csv@^3.5.3:
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/json-2-csv/-/json-2-csv-3.5.3.tgz#3011bc4b9af7a510e2a4fa9f505de5bbace72855"
+json-2-csv@^3.15.0:
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/json-2-csv/-/json-2-csv-3.15.0.tgz#c2440213b189f93b0b35b2f8ce6d2eccf8d425ec"
+  integrity sha512-M6KuKYQ7pBX4duzTjoszAKMD3DE5ZtgnYSGW8beOmkaEqJ1NEWmuJJOVq/GTWkT503Tsg0/OEuqVVD06D/hdzA==
   dependencies:
-    deeks "2.2.1"
-    doc-path "2.0.1"
-    underscore "1.9.1"
+    deeks "2.5.1"
+    doc-path "3.0.2"
 
 json-schema-traverse@^0.4.1:
   version "0.4.1"
@@ -2980,10 +2980,6 @@ undefsafe@^2.0.2:
   resolved "https://registry.yarnpkg.com/undefsafe/-/undefsafe-2.0.2.tgz#225f6b9e0337663e0d8e7cfd686fc2836ccace76"
   dependencies:
     debug "^2.2.0"
-
-underscore@1.9.1:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
 
 union-value@^1.0.0:
   version "1.0.0"
