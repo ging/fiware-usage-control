@@ -30,7 +30,7 @@ First, the architecture and scenario are presented, followed by the instructions
 
 ## Architecture
 
-The next figure presents an abstract representation of the proposed architecture for usage control .
+The next figure presents an abstract representation of the proposed architecture for usage control.
 A general overview of the architecture is presented in the next figure. 
 This scheme is derived from a hybrid model based on the *[Data Privacy Directive 95/46/EC](https://eur-lex.europa.eu/legal-content/en/TXT/?uri=CELEX%3A31995L0046)* and the *[IDS reference architecture](https://www.fraunhofer.de/content/dam/zv/de/Forschungsfelder/industrial-data-space/IDS_Referenz_Architecture.pdf)* 
 and it is divided in three essential parts: Data Provider, Data Consumer and Data Controller.
