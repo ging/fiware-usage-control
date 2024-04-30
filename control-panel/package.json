@@ -13,7 +13,7 @@
     "connect-session-sequelize": "^6.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
-    "ejs": "~2.5.7",
+    "ejs": "~3.1.10",
     "express": "~4.16.0",
     "express-partials": "^0.3.0",
     "express-session": "^1.16.1",
