@@ -22,7 +22,7 @@
     "method-override": "^3.0.0",
     "morgan": "~1.9.0",
     "needle": "^2.3.1",
-    "node-sass-middleware": "0.11.0",
+    "node-sass-middleware": "1.1.0",
     "nodemon": "^1.18.11",
     "sequelize": "^5.8.4",
     "sequelize-cli": "^5.4.0",
