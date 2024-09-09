@@ -68,7 +68,7 @@ The use case proposed is based on a supermarket scenario. It consists on a serie
 
 #### Data definition
 The data involved in this scenario is represented by a Ticket Entity available in Orion. This entity contains purchase information on the specific store (`mall`), the `client`, the `date`, and a list with the purchased `items`. 
-Each of these items includes the number of units purchased (`net_am`), the unit price (`net_am`) and the description of the item (`desc`).
+Each of these items includes the number of units purchased (`n_unit`), the unit price (`net_am`) and the description of the item (`desc`).
 A sample entity is presented below:
 
 ```json
