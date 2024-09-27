@@ -23,7 +23,7 @@
     "morgan": "~1.9.0",
     "needle": "^2.3.1",
     "node-sass-middleware": "0.11.0",
-    "nodemon": "^1.18.11",
+    "nodemon": "^2.0.17",
     "sequelize": "^5.8.4",
     "sequelize-cli": "^5.4.0",
     "socket.io": "^2.2.0",
