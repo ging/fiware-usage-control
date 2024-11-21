@@ -18,7 +18,7 @@
     "express-partials": "^0.3.0",
     "express-session": "^1.16.1",
     "http-errors": "~1.6.2",
-    "json-2-csv": "^3.5.3",
+    "json-2-csv": "^3.6.1",
     "method-override": "^3.0.0",
     "morgan": "~1.9.0",
     "needle": "^2.3.1",
